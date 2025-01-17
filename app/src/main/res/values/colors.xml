@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Cores Básicas -->
+    <color name="preto">#000000</color>
+    <color name="branco">#FFFFFF</color>
+    <color name="transparente">#00000000</color>
+
+    <!-- Cores Principais -->
+    <color name="azul_escuro">#2C3E50</color>
+    <color name="azul_claro">#3498DB</color>
+    <color name="cinza_escuro">#34495E</color>
+    <color name="cinza_claro">#D9D9D9</color>
+
+    <!-- Cores Informátivas -->
+    <color name="azul">#007BFF</color>
+    <color name="verde">#2ECC71</color>
+    <color name="vermelho">#E74C3C</color>
+    <color name="amarelo">#F1C40F</color>
+
+    <!-- Cores Especiais -->
+    <color name="azul_marinho">#2980B9</color>
+    <color name="verde_oliva">#27AE60</color>
+    <color name="cinza_azulado">#7F8C8D</color>
+    <color name="turquesa">#16A085</color>
+    <color name="coral">#FF6347</color>
+    <color name="salmon">#FA8072</color>
+    <color name="bege">#F4D03F</color>
+    <color name="verde_esmeralda">#16A085</color>
+    <color name="ouro">#F39C12</color>
+</resources>

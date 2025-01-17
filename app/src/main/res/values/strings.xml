@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Estetify</string>
+
+    <!-- Textos Padrões -->
+    <string name="pular">Pular ❯❯</string>
+    <string name="avancar">Avançar ❯</string>
+    <string name="voltar">❮ Voltar</string>
+    <string name="entrar">Entrar</string>
+    <string name="registrar">Registre-se</string>
+
+    <!-- Textos Apresentação -->
+    <string name="texto_rodape">© 2024 Estetify. Todos os direitos reservados.</string>
+
+    <!-- Textos Introdução -->
+    <string name="titulo_produtos">Produtos e Serviços</string>
+    <string name="titulo_agendamentos">Agendamentos e Localização</string>
+    <string name="texto_introducao_produtos">• Encontre produtos de beleza e cosmeticos.\n\n• Serviços de beleza com o profissional certo.\n\n• Tudo e todos os serviços em um só app.</string>
+    <string name="texto_introducao_agendamentos">• Levamos e trazemos serviços de beleza até você.\n\n• Agende com profissionais para cuidar da sua beleza.\n\n• Avance e viva essa experiência completa.</string>
+
+    <!-- Textos Inicio -->
+    <string name="texto_slogan">Cuidando de você, realçando o seu melhor.</string>
+
+    <!-- Textos Conectar -->
+    <string name="titulo_conectar">Conecte-se</string>
+    <string name="e_mail">Email</string>
+    <string name="senha">Senha</string>
+    <string name="conectar">Conectar</string>
+    <string name="esqueceu_senha">Esqueceu a senha?</string>
+</resources>
