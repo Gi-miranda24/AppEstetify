@@ -1,73 +1,178 @@
 package com.example.estetify;
 
+import android.content.Intent;
 import android.content.res.ColorStateList;
-import android.graphics.Color; // Classe para manipulação de cores
-import android.os.Bundle; // Classe para gerenciar o estado da atividade
-import android.view.View; // Classe para representar uma view
-import android.widget.EditText; // Classe para representar um campo de texto editável
-import com.google.android.material.button.MaterialButton; // Classe para representar um botão material
+import android.graphics.Color;
+import android.os.Bundle;
+import android.text.InputType;
+import android.view.MotionEvent;
+import android.view.View;
+import android.widget.CheckBox;
+import android.widget.EditText;
+import android.widget.ProgressBar;
+import android.widget.Toast;
+import com.google.android.material.button.MaterialButton;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
+import androidx.core.content.res.ResourcesCompat;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
+import com.google.firebase.auth.FirebaseAuthInvalidUserException;
 
-import androidx.appcompat.app.AppCompatActivity; // Classe base para atividades que utilizam a biblioteca de compatibilidade
-import androidx.core.content.ContextCompat; // Classe para fornecer métodos de compatibilidade para recursos
-import androidx.core.graphics.Insets; // Classe para lidar com insets (espaços ocupados pelas barras do sistema)
-import androidx.core.view.ViewCompat; // Classe que fornece métodos para manipulação de Views
-import androidx.core.view.WindowInsetsCompat; // Classe que fornece suporte para insets de janelas
-
-// Classe principal da atividade de apresentação
 public class MainConectar extends AppCompatActivity {
+    
+    private CheckBox mostrarSenha;
+    private EditText campoSenha;
+    private EditText campoEmail;
+    private MaterialButton botaoConectar;
+    private ProgressBar loadingConectar;
+    private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState); // Chama o metodo onCreate da classe base (superclasse)
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_conectar);
 
-        setContentView(R.layout.activity_conectar); // Define o layout da atividade usando o arquivo XML 'activity_apresentacao'
+        // Inicializar Firebase Auth
+        mAuth = FirebaseAuth.getInstance();
 
         // Muda a cor da barra de status e da barra de navegação
         changeStatusBarColor();
         changeNavigationBarColor();
 
-        // Ajusta o padding da View principal para que o conteúdo não ocupe o espaço das barras do sistema
+        // Ajusta o padding da View principal
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets; // Retorna os insets para que o sistema continue o processamento normal de insets
+            return insets;
         });
 
-        EditText campoEmail = findViewById(R.id.campo_email);
+        // Inicialização dos elementos
+        mostrarSenha = findViewById(R.id.mostrar_senha);
+        campoSenha = findViewById(R.id.campo_senha);
+        campoEmail = findViewById(R.id.campo_email);
+        botaoConectar = findViewById(R.id.botao_conectar);
+        loadingConectar = findViewById(R.id.loading_conectar);
+
+        // Listener para a CheckBox
+        mostrarSenha.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (isChecked) {
+                campoSenha.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
+            } else {
+                campoSenha.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+            }
+            
+            android.graphics.Typeface interFont = ResourcesCompat.getFont(MainConectar.this, R.font.fonte_inter);
+            campoSenha.setTypeface(interFont);
+            campoSenha.setSelection(campoSenha.getText().length());
+        });
+
+        configurarEfeitoBotao(botaoConectar);
+
         MaterialButton corpoEmail = findViewById(R.id.corpo_email);
-
-        campoEmail.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (hasFocus) {
-                    corpoEmail.setStrokeColor(ColorStateList.valueOf(ContextCompat.getColor(MainConectar.this, R.color.azul))); // Set border color to azul
-                } else {
-                    corpoEmail.setStrokeColor(ColorStateList.valueOf(ContextCompat.getColor(MainConectar.this, R.color.branco))); // Set border color back to branco
-                }
-            }
+        campoEmail.setOnFocusChangeListener((v, hasFocus) -> {
+            int color = hasFocus ? R.color.azul : R.color.branco;
+            corpoEmail.setStrokeColor(ColorStateList.valueOf(ContextCompat.getColor(MainConectar.this, color)));
         });
 
-        EditText campoSenha = findViewById(R.id.campo_senha);
         MaterialButton corpoSenha = findViewById(R.id.corpo_senha);
+        campoSenha.setOnFocusChangeListener((v, hasFocus) -> {
+            int color = hasFocus ? R.color.azul : R.color.branco;
+            corpoSenha.setStrokeColor(ColorStateList.valueOf(ContextCompat.getColor(MainConectar.this, color)));
+        });
 
-        campoSenha.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (hasFocus) {
-                    corpoSenha.setStrokeColor(ColorStateList.valueOf(ContextCompat.getColor(MainConectar.this, R.color.azul))); // Set border color to azul
-                } else {
-                    corpoSenha.setStrokeColor(ColorStateList.valueOf(ContextCompat.getColor(MainConectar.this, R.color.branco))); // Set border color back to branco
-                }
+        // Configurar click do botão conectar
+        botaoConectar.setOnClickListener(v -> tentarLogin());
+    }
+
+    private void tentarLogin() {
+        String email = campoEmail.getText().toString().trim();
+        String senha = campoSenha.getText().toString();
+
+        if (!validarCampos(email, senha)) {
+            return;
+        }
+
+        // Mostrar loading e desabilitar botão
+        loadingConectar.setVisibility(View.VISIBLE);
+        botaoConectar.setEnabled(false);
+
+        mAuth.signInWithEmailAndPassword(email, senha)
+                .addOnCompleteListener(this, task -> {
+                    if (task.isSuccessful()) {
+                        // Login bem sucedido
+                        Toast.makeText(MainConectar.this, 
+                            "Login realizado com sucesso", 
+                            Toast.LENGTH_SHORT).show();
+                        
+                        // Redirecionar para o MainPainel
+                        Intent intent = new Intent(MainConectar.this, MainPainel.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        startActivity(intent);
+                        finish();
+                    } else {
+                        // Esconder loading e reabilitar botão
+                        loadingConectar.setVisibility(View.GONE);
+                        botaoConectar.setEnabled(true);
+
+                        // Tratar erros específicos
+                        try {
+                            throw task.getException();
+                        } catch (FirebaseAuthInvalidUserException e) {
+                            campoEmail.setError("Usuário não encontrado");
+                            campoEmail.requestFocus();
+                        } catch (FirebaseAuthInvalidCredentialsException e) {
+                            campoSenha.setError("Senha incorreta");
+                            campoSenha.requestFocus();
+                        } catch (Exception e) {
+                            Toast.makeText(MainConectar.this,
+                                "Erro ao fazer login: " + e.getMessage(),
+                                Toast.LENGTH_LONG).show();
+                        }
+                    }
+                });
+    }
+
+    private boolean validarCampos(String email, String senha) {
+        if (email.isEmpty()) {
+            campoEmail.setError("Digite seu email");
+            campoEmail.requestFocus();
+            return false;
+        }
+
+        if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            campoEmail.setError("Email inválido");
+            campoEmail.requestFocus();
+            return false;
+        }
+
+        if (senha.isEmpty()) {
+            campoSenha.setError("Digite sua senha");
+            campoSenha.requestFocus();
+            return false;
+        }
+
+        return true;
+    }
+
+    private void configurarEfeitoBotao(MaterialButton botao) {
+        botao.setOnTouchListener((v, event) -> {
+            if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                botao.setStrokeColor(ColorStateList.valueOf(ContextCompat.getColor(this, R.color.azul)));
+            } else if (event.getAction() == MotionEvent.ACTION_UP || event.getAction() == MotionEvent.ACTION_CANCEL) {
+                botao.setStrokeColor(ColorStateList.valueOf(ContextCompat.getColor(this, R.color.branco)));
             }
+            return false;
         });
     }
 
-    // Função para mudar a cor da barra de status
     private void changeStatusBarColor() {
         getWindow().setStatusBarColor(Color.parseColor("#2C3E50"));
     }
 
-    // Função para mudar a cor da barra de navegação
     private void changeNavigationBarColor() {
         getWindow().setNavigationBarColor(Color.parseColor("#2C3E50"));
     }

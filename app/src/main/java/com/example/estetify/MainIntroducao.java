@@ -6,6 +6,7 @@ import android.os.Bundle; // Para gerenciar o estado da atividade
 import android.widget.Button; // Para manipulação de botões
 import android.widget.ImageView; // Para manipulação de imagens
 import android.widget.TextView; // Para manipulação de textos
+import android.widget.LinearLayout;
 import android.content.Intent; // Para manipulação de intents
 import android.content.SharedPreferences; // Para armazenamento de dados persistentes
 
@@ -18,9 +19,10 @@ import androidx.core.view.WindowInsetsCompat; // Para obter os insets ocupados p
 public class MainIntroducao extends AppCompatActivity {
 
     // Declaração das variáveis de interface
-    private Button botaoPular, botaoVoltar, botaoAvancar, fundoCaixa; // Botões de navegação
+    private Button botaoPular, botaoVoltar, botaoAvancar; // Botões de navegação
     private ImageView apresentacaoImageUm, apresentacaoImageDois; // Imagens a serem exibidas
     private TextView textoProdutos, textoAgendamentos, tituloProdutos, tituloAgendamentos; // Textos a serem exibidos
+    private LinearLayout linearLayout; // Declaração da View principal
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,14 +49,9 @@ public class MainIntroducao extends AppCompatActivity {
 
         // Ajusta o padding da View principal para que o conteúdo não ocupe o espaço das barras do sistema
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            // Obtém os insets das barras do sistema
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-
-            // Aplica o padding necessário
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-
-            // Retorna os insets
-            return insets;
+            return insets; // Retorna os insets para que o sistema continue o processamento normal de insets
         });
 
         // Inicialização dos elementos de interface
@@ -67,7 +64,7 @@ public class MainIntroducao extends AppCompatActivity {
         botaoAvancar = findViewById(R.id.botao_avancar);
         tituloProdutos = findViewById(R.id.titulo_produtos);
         tituloAgendamentos = findViewById(R.id.titulo_agendamentos);
-        fundoCaixa = findViewById(R.id.fundo_caixa);
+        linearLayout = findViewById(R.id.linear_layout);
 
         // Chama o metodo para fazer apresentacaoImageUm e textoProdutos aparecerem com animação de fade-in
         chamarIntroducaoUm(); // Chama o metodo para iniciar a animação de introdução
@@ -99,7 +96,7 @@ public class MainIntroducao extends AppCompatActivity {
             // Fade-in para apresentacaoImageUm
             apresentacaoImageUm.animate().alpha(1f).setDuration(500).start();
             // Fade-in para fundoApresentacao
-            fundoCaixa.animate().alpha(1f).setDuration(500).start();
+            linearLayout.animate().alpha(1f).setDuration(500).start();
             // Fade-in para textoProdutos
             textoProdutos.animate().alpha(1f).setDuration(500).start();
 
@@ -144,7 +141,7 @@ public class MainIntroducao extends AppCompatActivity {
         // Fade-out para apresentacaoImageUm, textoProdutos, botaoPular e botaoAvancar
         tituloProdutos.animate().alpha(0f).setDuration(500).start();
         apresentacaoImageUm.animate().alpha(0f).setDuration(500).start();
-        fundoCaixa.animate().alpha(0f).setDuration(500).start();
+        linearLayout.animate().alpha(0f).setDuration(500).start();
         textoProdutos.animate().alpha(0f).setDuration(500).start();
         botaoPular.animate().alpha(0f).setDuration(500).start();
         botaoAvancar.animate().alpha(0f).setDuration(500).withEndAction(this::chamarIntroducaoDois).start();
@@ -161,7 +158,7 @@ public class MainIntroducao extends AppCompatActivity {
             // Fade-in para textoAgendamentos
             textoAgendamentos.animate().alpha(1f).setDuration(500).start();
             // Fade-in para fundoApresentacao
-            fundoCaixa.animate().alpha(1f).setDuration(500).start();
+            linearLayout.animate().alpha(1f).setDuration(500).start();
 
             // Chamar o próximo metodo aqui
             chamarElementosNovamente();
@@ -200,7 +197,7 @@ public class MainIntroducao extends AppCompatActivity {
         tituloAgendamentos.animate().alpha(0f).setDuration(500).start();
         apresentacaoImageDois.animate().alpha(0f).setDuration(500).start();
         textoAgendamentos.animate().alpha(0f).setDuration(500).start();
-        fundoCaixa.animate().alpha(0f).setDuration(500).start();
+        linearLayout.animate().alpha(0f).setDuration(500).start();
         botaoVoltar.animate().alpha(0f).setDuration(500).start();
         botaoPular.animate().alpha(0f).setDuration(500).start();
         botaoAvancar.animate().alpha(0f).setDuration(500).withEndAction(this::chamarIntroducaoUm).start();

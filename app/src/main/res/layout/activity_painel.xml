@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/azul_escuro"
+    tools:context=".MainPainel">
+
+    <ImageView
+        android:id="@+id/logotipo"
+        android:layout_width="128dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:scaleType="fitCenter"
+        android:src="@drawable/icone_logotipo_texto"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:padding="16dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <TextView
+            android:id="@+id/texto_bem_vindo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Bem-vindo(a)!"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:textColor="@color/branco"
+            android:fontFamily="@font/fonte_inter"
+            android:layout_marginBottom="8dp" />
+
+        <TextView
+            android:id="@+id/nome_usuario"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:textColor="@color/branco"
+            android:fontFamily="@font/fonte_inter"
+            android:layout_marginBottom="16dp"
+            tools:text="Nome do Usuário" />
+
+        <TextView
+            android:id="@+id/email_usuario"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:textColor="@color/branco"
+            android:fontFamily="@font/fonte_inter"
+            android:layout_marginBottom="32dp"
+            tools:text="usuario@email.com" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/botao_sair"
+            android:layout_width="320dp"
+            android:layout_height="64dp"
+            android:text="Sair da Conta"
+            android:textSize="16sp"
+            android:textColor="@color/branco"
+            android:fontFamily="@font/fonte_inter"
+            app:backgroundTint="@color/transparente"
+            app:cornerRadius="10dp"
+            app:strokeColor="@color/branco"
+            app:strokeWidth="4dp" />
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
