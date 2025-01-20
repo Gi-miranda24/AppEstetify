@@ -1,0 +1,38 @@
+{
+  "project_info": {
+    "project_number": "635129675862",
+    "project_id": "estetify-app",
+    "storage_bucket": "estetify-app.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:635129675862:android:cdb51af023f6670ad6bbf7",
+        "android_client_info": {
+          "package_name": "com.example.estetify"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "635129675862-07dp5kuc7eumpje170lgv17gqmk0olsr.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.estetify",
+            "certificate_hash": "c34830438d25bd62639ca5325f57fb1361f0eaeb"
+          }
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCsEbeKekg2hGLx6v_kNe933L56BVZT5mU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -5,6 +5,398 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/azul_escuro"
     tools:context=".MainRegistrar">
+
+    <ImageView
+        android:id="@+id/logotipo"
+        android:layout_width="128dp"
+        android:layout_height="48dp"
+        android:src="@drawable/icone_logotipo_texto"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:scaleType="fitCenter" />
+
+    <TextView
+        android:id="@+id/texto_rodape"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/texto_slogan"
+        android:fontFamily="@font/fonte_inter"
+        android:textSize="13sp"
+        android:padding="32dp"
+        android:textStyle="bold"
+        android:textColor="@color/branco"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="32dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="576dp"
+        android:orientation="vertical"
+        android:gravity="center"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:id="@+id/linearLayout1"
+            android:layout_width="match_parent"
+            android:layout_height="72dp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="@+id/linearLayout"
+            app:layout_constraintEnd_toEndOf="@+id/linearLayout"
+            app:layout_constraintStart_toStartOf="@+id/linearLayout"
+            app:layout_constraintTop_toTopOf="@+id/linearLayout">
+
+            <ImageView
+                android:id="@+id/imageView"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:paddingTop="2dp"
+                android:paddingEnd="4dp"
+                app:srcCompat="@drawable/icone_conta_criar" />
+
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="wrap_content"
+                android:layout_height="64dp"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:fontFamily="@font/fonte_inter"
+                android:text="@string/registrar"
+                android:textColor="@color/branco"
+                android:textSize="28sp" />
+
+        </LinearLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraintLayout1"
+            android:layout_width="match_parent"
+            android:layout_height="72dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/corpo_nome_completo"
+                android:layout_width="320dp"
+                android:layout_height="64dp"
+                android:text="ㅤ"
+                app:backgroundTint="@color/transparente"
+                app:cornerRadius="10dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:strokeColor="@color/branco"
+                app:strokeWidth="4dp"
+                android:enabled="false" />
+
+            <ImageView
+                android:id="@+id/icone_nome_completo"
+                android:layout_width="320dp"
+                android:layout_height="28dp"
+                android:paddingStart="15dp"
+                android:scaleType="fitStart"
+                android:src="@drawable/icone_conta"
+                app:cornerRadius="10dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:strokeColor="@color/branco"
+                app:strokeWidth="6dp" />
+
+            <EditText
+                android:id="@+id/campo_nome_completo"
+                android:layout_width="256dp"
+                android:layout_height="54dp"
+                android:textSize="16dp"
+                android:layout_marginStart="80px"
+                android:inputType="textCapSentences"
+                android:importantForAutofill="yes"
+                android:hint="@string/nome_completo"
+                android:maxLines="1"
+                android:fontFamily="@font/fonte_inter"
+                android:textColorHint="@color/cinza_azulado"
+                android:textColor="@color/branco"
+                app:backgroundTint="@color/transparente"
+                app:cornerRadius="10dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:strokeColor="@color/branco"
+                app:strokeWidth="6dp" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraintLayout2"
+            android:layout_width="match_parent"
+            android:layout_height="72dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/corpo_email"
+                android:layout_width="320dp"
+                android:layout_height="64dp"
+                android:text="ㅤ"
+                app:backgroundTint="@color/transparente"
+                app:cornerRadius="10dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:strokeColor="@color/branco"
+                app:strokeWidth="4dp"
+                android:enabled="false" />
+
+            <ImageView
+                android:id="@+id/icone_email"
+                android:layout_width="320dp"
+                android:layout_height="28dp"
+                android:paddingStart="15dp"
+                android:scaleType="fitStart"
+                android:src="@drawable/icone_email"
+                app:cornerRadius="10dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:strokeColor="@color/branco"
+                app:strokeWidth="6dp" />
+
+            <EditText
+                android:id="@+id/campo_email"
+                android:layout_width="256dp"
+                android:layout_height="54dp"
+                android:textSize="16dp"
+                android:layout_marginStart="80px"
+                android:inputType="text|textNoSuggestions"
+                android:importantForAutofill="yes"
+                android:hint="@string/email"
+                android:maxLines="1"
+                android:fontFamily="@font/fonte_inter"
+                android:textColorHint="@color/cinza_azulado"
+                android:textColor="@color/branco"
+                app:backgroundTint="@color/transparente"
+                app:cornerRadius="10dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:strokeColor="@color/branco"
+                app:strokeWidth="6dp" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraintLayout3"
+            android:layout_width="match_parent"
+            android:layout_height="72dp">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/corpo_senha"
+                android:layout_width="320dp"
+                android:layout_height="64dp"
+                android:text="ㅤ"
+                app:backgroundTint="@color/transparente"
+                app:cornerRadius="10dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:strokeColor="@color/branco"
+                app:strokeWidth="4dp"
+                android:enabled="false" />
+
+            <ImageView
+                android:id="@+id/icone_senha"
+                android:layout_width="320dp"
+                android:layout_height="28dp"
+                android:paddingStart="15dp"
+                android:scaleType="fitStart"
+                android:src="@drawable/icone_senha"
+                app:cornerRadius="10dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:strokeColor="@color/branco"
+                app:strokeWidth="6dp" />
+
+            <EditText
+                android:id="@+id/campo_senha"
+                android:layout_width="256dp"
+                android:layout_height="54dp"
+                android:textSize="16dp"
+                android:layout_marginStart="80px"
+                android:inputType="textPassword"
+                android:importantForAutofill="no"
+                android:hint="@string/senha"
+                android:maxLines="1"
+                android:fontFamily="@font/fonte_inter"
+                android:textColorHint="@color/cinza_azulado"
+                android:textColor="@color/branco"
+                app:backgroundTint="@color/transparente"
+                app:cornerRadius="10dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:strokeColor="@color/branco"
+                app:strokeWidth="6dp" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraintLayout4"
+            android:layout_width="match_parent"
+            android:layout_height="72dp">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/corpo_repetir_senha"
+                android:layout_width="320dp"
+                android:layout_height="64dp"
+                android:text="ㅤ"
+                app:backgroundTint="@color/transparente"
+                app:cornerRadius="10dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:strokeColor="@color/branco"
+                app:strokeWidth="4dp"
+                android:enabled="false" />
+
+            <ImageView
+                android:id="@+id/icone_repetir_senha"
+                android:layout_width="320dp"
+                android:layout_height="28dp"
+                android:paddingStart="15dp"
+                android:scaleType="fitStart"
+                android:src="@drawable/icone_senha"
+                app:cornerRadius="10dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:strokeColor="@color/branco"
+                app:strokeWidth="6dp" />
+
+            <EditText
+                android:id="@+id/campo_repetir_senha"
+                android:layout_width="256dp"
+                android:layout_height="54dp"
+                android:textSize="16dp"
+                android:layout_marginStart="80px"
+                android:inputType="textPassword"
+                android:importantForAutofill="no"
+                android:hint="@string/repetir_senha"
+                android:maxLines="1"
+                android:fontFamily="@font/fonte_inter"
+                android:textColorHint="@color/cinza_azulado"
+                android:textColor="@color/branco"
+                app:backgroundTint="@color/transparente"
+                app:cornerRadius="10dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:strokeColor="@color/branco"
+                app:strokeWidth="6dp" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <LinearLayout
+            android:id="@+id/linearLayout2"
+            android:layout_width="match_parent"
+            android:layout_height="104dp"
+            android:layout_gravity="center"
+            android:background="@color/azul_escuro"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <CheckBox
+                android:id="@+id/mostrar_senha"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/mostrar_senha"
+                android:fontFamily="@font/fonte_inter"
+                android:textColor="@color/branco"
+                android:buttonTint="@color/branco"
+                android:layout_marginTop="-15dp"/>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/botao_criar"
+                android:layout_width="320dp"
+                android:layout_height="56dp"
+                android:fontFamily="@font/fonte_inter"
+                android:text="@string/criar"
+                android:textColor="@color/preto"
+                android:textStyle="bold"
+                android:textSize="16sp"
+                app:backgroundTint="@color/branco"
+                app:cornerRadius="10dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:strokeColor="@color/branco"
+                app:strokeWidth="4dp" />
+
+            <ProgressBar
+                android:id="@+id/loading_registrar"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_gravity="center"
+                android:visibility="gone"
+                android:indeterminateTint="@color/branco"
+                android:layout_marginTop="-44dp"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/linearLayout4"
+            android:layout_width="match_parent"
+            android:layout_height="64dp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/botao_esqueceu_senha"
+                android:layout_width="256dp"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:fontFamily="@font/fonte_inter"
+                android:text="@string/politica_cadastro"
+                android:textColor="@color/azul"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:textSize="14sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </LinearLayout>
+
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,30 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- Textos Padrão -->
     <string name="app_name">Estetify</string>
 
-    <!-- Textos Padrões -->
+    <!-- Textos Apresentação -->
+    <string name="texto_rodape"> 2024 Estetify. Todos os direitos reservados.</string>
+
+    <!-- Textos Introdução -->
     <string name="pular">Pular ❯❯</string>
     <string name="avancar">Avançar ❯</string>
     <string name="voltar">❮ Voltar</string>
-    <string name="entrar">Entrar</string>
-    <string name="registrar">Registre-se</string>
-
-    <!-- Textos Apresentação -->
-    <string name="texto_rodape">© 2024 Estetify. Todos os direitos reservados.</string>
-
-    <!-- Textos Introdução -->
     <string name="titulo_produtos">Produtos e Serviços</string>
     <string name="titulo_agendamentos">Agendamentos e Localização</string>
     <string name="texto_introducao_produtos">• Encontre produtos de beleza e cosmeticos.\n\n• Serviços de beleza com o profissional certo.\n\n• Tudo e todos os serviços em um só app.</string>
     <string name="texto_introducao_agendamentos">• Levamos e trazemos serviços de beleza até você.\n\n• Agende com profissionais para cuidar da sua beleza.\n\n• Avance e viva essa experiência completa.</string>
 
     <!-- Textos Inicio -->
+    <string name="entrar">Entrar</string>
+    <string name="registrar">Registre-se</string>
     <string name="texto_slogan">Cuidando de você, realçando o seu melhor.</string>
 
     <!-- Textos Conectar -->
     <string name="titulo_conectar">Conecte-se</string>
-    <string name="e_mail">Email</string>
+    <string name="email">E-mail</string>
     <string name="senha">Senha</string>
+    <string name="mostrar_senha">Mostrar Senha</string>
     <string name="conectar">Conectar</string>
     <string name="esqueceu_senha">Esqueceu a senha?</string>
+
+    <!-- Textos Registrar -->
+    <string name="nome_completo">Nome Completo</string>
+    <string name="repetir_senha">Repetir Senha</string>
+    <string name="mostrar_repetir">Mostrar Repetir</string>
+    <string name="criar">Criar</string>
+    <string name="politica_cadastro">Ao clicar em Criar, você aceita nossos Termos de Politica e Privacidade.</string>
+
+    <!-- Textos OAuth -->
+    <string name="google_client_id">635129675862-07dp5kuc7eumpje170lgv17gqmk0olsr.apps.googleusercontent.com</string>
+
 </resources>
