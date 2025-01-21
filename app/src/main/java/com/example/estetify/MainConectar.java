@@ -9,6 +9,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 import com.google.android.material.button.MaterialButton;
@@ -56,6 +57,36 @@ public class MainConectar extends AppCompatActivity {
         campoEmail = findViewById(R.id.campo_email);
         botaoConectar = findViewById(R.id.botao_conectar);
         loadingConectar = findViewById(R.id.loading_conectar);
+        ImageView iconeEmail = findViewById(R.id.icone_email);
+        ImageView iconeSenha = findViewById(R.id.icone_senha);
+
+        // Cor azul e cinza dos ícones
+        int corAzul = Color.parseColor("#2196F3");
+        int corCinza = Color.parseColor("#FFFFFF");
+
+        // Listener para o campo de email
+        campoEmail.setOnFocusChangeListener((v, hasFocus) -> {
+            int color = hasFocus ? R.color.azul : R.color.branco;
+            MaterialButton corpoEmail = findViewById(R.id.corpo_email);
+            corpoEmail.setStrokeColor(ColorStateList.valueOf(ContextCompat.getColor(MainConectar.this, color)));
+            if (hasFocus) {
+                iconeEmail.setColorFilter(corAzul);
+            } else {
+                iconeEmail.setColorFilter(corCinza);
+            }
+        });
+
+        // Listener para o campo de senha
+        campoSenha.setOnFocusChangeListener((v, hasFocus) -> {
+            int color = hasFocus ? R.color.azul : R.color.branco;
+            MaterialButton corpoSenha = findViewById(R.id.corpo_senha);
+            corpoSenha.setStrokeColor(ColorStateList.valueOf(ContextCompat.getColor(MainConectar.this, color)));
+            if (hasFocus) {
+                iconeSenha.setColorFilter(corAzul);
+            } else {
+                iconeSenha.setColorFilter(corCinza);
+            }
+        });
 
         // Listener para a CheckBox
         mostrarSenha.setOnCheckedChangeListener((buttonView, isChecked) -> {
@@ -71,18 +102,6 @@ public class MainConectar extends AppCompatActivity {
         });
 
         configurarEfeitoBotao(botaoConectar);
-
-        MaterialButton corpoEmail = findViewById(R.id.corpo_email);
-        campoEmail.setOnFocusChangeListener((v, hasFocus) -> {
-            int color = hasFocus ? R.color.azul : R.color.branco;
-            corpoEmail.setStrokeColor(ColorStateList.valueOf(ContextCompat.getColor(MainConectar.this, color)));
-        });
-
-        MaterialButton corpoSenha = findViewById(R.id.corpo_senha);
-        campoSenha.setOnFocusChangeListener((v, hasFocus) -> {
-            int color = hasFocus ? R.color.azul : R.color.branco;
-            corpoSenha.setStrokeColor(ColorStateList.valueOf(ContextCompat.getColor(MainConectar.this, color)));
-        });
 
         // Configurar click do botão conectar
         botaoConectar.setOnClickListener(v -> tentarLogin());

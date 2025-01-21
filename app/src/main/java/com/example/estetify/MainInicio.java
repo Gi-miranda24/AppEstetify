@@ -23,46 +23,114 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.button.MaterialButton;
+import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 public class MainInicio extends AppCompatActivity {
 
     private GoogleSignInClient mGoogleSignInClient;
     private ActivityResultLauncher<Intent> signInLauncher;
     private FirebaseAuth mAuth;
+    private FirebaseFirestore db;
+    private GoogleSignInOptions gso;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        // Inicializar Firebase Auth
-        mAuth = FirebaseAuth.getInstance();
-
-        // Verificar se já existe uma sessão ativa
-        if (checkExistingSession()) {
-            goToMainPainel();
-            return;
-        }
-
         setContentView(R.layout.activity_inicio);
 
+        // Inicializar Firebase
+        mAuth = FirebaseAuth.getInstance();
+        db = FirebaseFirestore.getInstance();
+
         // Configurar Google Sign In
-        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestEmail()
-                .requestProfile()
-                .build();
+        gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+            .requestIdToken(getString(R.string.default_web_client_id))
+            .requestEmail()
+            .build();
 
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
 
-        // Configurar o launcher para o resultado do login
+        // Verificar se já existe um usuário logado
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        if (currentUser != null) {
+            verificarUsuarioFirestore(currentUser);
+        } else {
+            // Se não existe usuário, continua na tela de início
+            setupViews();
+        }
+
+        // Configurar o launcher para o resultado do login do Google
         signInLauncher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
             result -> {
                 Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(result.getData());
-                handleSignInResult(task);
-            }
-        );
+                try {
+                    GoogleSignInAccount account = task.getResult(ApiException.class);
+                    // Criar credencial do Firebase com a conta Google
+                    AuthCredential credential = GoogleAuthProvider.getCredential(account.getIdToken(), null);
+                    
+                    // Autenticar no Firebase
+                    mAuth.signInWithCredential(credential)
+                        .addOnSuccessListener(authResult -> {
+                            // Criar/verificar usuário no Firestore
+                            FirebaseUser user = authResult.getUser();
+                            if (user != null) {
+                                db.collection("usuarios")
+                                    .document(user.getUid())
+                                    .get()
+                                    .addOnSuccessListener(document -> {
+                                        if (!document.exists()) {
+                                            // Criar novo usuário no Firestore
+                                            db.collection("usuarios")
+                                                .document(user.getUid())
+                                                .set(new Usuario(
+                                                    user.getDisplayName(),
+                                                    user.getEmail(),
+                                                    user.getPhotoUrl() != null ? user.getPhotoUrl().toString() : null
+                                                ))
+                                                .addOnSuccessListener(aVoid -> {
+                                                    // Ir para o painel
+                                                    startActivity(new Intent(MainInicio.this, MainPainel.class));
+                                                    finish();
+                                                })
+                                                .addOnFailureListener(e -> {
+                                                    Toast.makeText(MainInicio.this,
+                                                        "Erro ao criar usuário: " + e.getMessage(),
+                                                        Toast.LENGTH_SHORT).show();
+                                                    mAuth.signOut();
+                                                    mGoogleSignInClient.signOut();
+                                                });
+                                        } else {
+                                            // Usuário já existe, ir para o painel
+                                            startActivity(new Intent(MainInicio.this, MainPainel.class));
+                                            finish();
+                                        }
+                                    })
+                                    .addOnFailureListener(e -> {
+                                        Toast.makeText(MainInicio.this,
+                                            "Erro ao verificar usuário: " + e.getMessage(),
+                                            Toast.LENGTH_SHORT).show();
+                                        mAuth.signOut();
+                                        mGoogleSignInClient.signOut();
+                                    });
+                            }
+                        })
+                        .addOnFailureListener(e -> {
+                            Toast.makeText(MainInicio.this,
+                                "Erro na autenticação: " + e.getMessage(),
+                                Toast.LENGTH_SHORT).show();
+                            mGoogleSignInClient.signOut();
+                        });
+                } catch (ApiException e) {
+                    Toast.makeText(MainInicio.this,
+                        "Erro no login com Google: " + e.getMessage(),
+                        Toast.LENGTH_SHORT).show();
+                }
+            });
 
         // Muda a cor da barra de status e da barra de navegação
         changeStatusBarColor();
@@ -74,13 +142,47 @@ public class MainInicio extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+    }
 
+    private void verificarUsuarioFirestore(FirebaseUser user) {
+        db.collection("usuarios")
+            .document(user.getUid())
+            .get()
+            .addOnSuccessListener(document -> {
+                if (document.exists()) {
+                    // Usuário existe no Firestore, pode prosseguir
+                    startActivity(new Intent(MainInicio.this, MainPainel.class));
+                    finish();
+                } else {
+                    // Usuário não existe no Firestore, fazer logout e mostrar tela de início
+                    mAuth.signOut();
+                    GoogleSignInClient googleSignInClient = GoogleSignIn.getClient(this, gso);
+                    googleSignInClient.signOut();
+                    setupViews();
+                    Toast.makeText(MainInicio.this, 
+                        "Conta não encontrada. Por favor, faça login novamente.", 
+                        Toast.LENGTH_LONG).show();
+                }
+            })
+            .addOnFailureListener(e -> {
+                // Erro ao verificar, manter na tela de início
+                mAuth.signOut();
+                GoogleSignInClient googleSignInClient = GoogleSignIn.getClient(this, gso);
+                googleSignInClient.signOut();
+                setupViews();
+                Toast.makeText(MainInicio.this, 
+                    "Erro ao verificar conta. Por favor, tente novamente.", 
+                    Toast.LENGTH_LONG).show();
+            });
+    }
+
+    private void setupViews() {
         MaterialButton botaoEntrar = findViewById(R.id.botao_entrar);
-        MaterialButton botaoRegistrar = findViewById(R.id.botao_registrar);
+        MaterialButton botaoCadastrar = findViewById(R.id.botao_registrar);
         MaterialButton botaoGoogle = findViewById(R.id.botao_google);
 
         configurarEfeitoBotao(botaoEntrar);
-        configurarEfeitoBotao(botaoRegistrar);
+        configurarEfeitoBotao(botaoCadastrar);
         configurarEfeitoBotao(botaoGoogle);
 
         botaoEntrar.setOnClickListener(v -> {
@@ -88,24 +190,12 @@ public class MainInicio extends AppCompatActivity {
             startActivity(intent);
         });
 
-        botaoRegistrar.setOnClickListener(v -> {
+        botaoCadastrar.setOnClickListener(v -> {
             Intent intent = new Intent(MainInicio.this, MainRegistrar.class);
             startActivity(intent);
         });
 
         botaoGoogle.setOnClickListener(v -> signIn());
-    }
-
-    private boolean checkExistingSession() {
-        // Verificar Firebase Auth
-        FirebaseUser firebaseUser = mAuth.getCurrentUser();
-        if (firebaseUser != null) {
-            return true;
-        }
-
-        // Verificar Google Sign In
-        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
-        return account != null;
     }
 
     private void configurarEfeitoBotao(MaterialButton botao) {
@@ -130,38 +220,5 @@ public class MainInicio extends AppCompatActivity {
     private void signIn() {
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();
         signInLauncher.launch(signInIntent);
-    }
-
-    private void handleSignInResult(Task<GoogleSignInAccount> completedTask) {
-        try {
-            GoogleSignInAccount account = completedTask.getResult(ApiException.class);
-            // Login bem sucedido, redirecionar para MainPainel
-            Toast.makeText(this, "Login realizado com sucesso!", Toast.LENGTH_SHORT).show();
-            goToMainPainel();
-        } catch (ApiException e) {
-            // Login falhou
-            String message;
-            switch (e.getStatusCode()) {
-                case 12500: // SIGN_IN_FAILED
-                    message = "Erro nos serviços do Google Play";
-                    break;
-                case 7: // NETWORK_ERROR
-                    message = "Erro de conexão. Verifique sua internet.";
-                    break;
-                case 10: // DEVELOPER_ERROR
-                    message = "Erro de configuração do OAuth";
-                    break;
-                default:
-                    message = "Falha no login com Google: " + e.getStatusCode();
-            }
-            Toast.makeText(this, message, Toast.LENGTH_LONG).show();
-        }
-    }
-
-    private void goToMainPainel() {
-        Intent intent = new Intent(MainInicio.this, MainPainel.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        startActivity(intent);
-        finish();
     }
 }

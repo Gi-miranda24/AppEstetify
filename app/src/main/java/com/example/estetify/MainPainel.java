@@ -1,161 +1,128 @@
 package com.example.estetify;
 
-import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.TextView;
+import android.view.WindowManager;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.WindowCompat;
+import androidx.core.view.WindowInsetsCompat;
+import androidx.core.view.ViewCompat;
+import androidx.core.graphics.Insets;
+import androidx.fragment.app.Fragment;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.firebase.auth.FirebaseAuth;
+import android.content.Intent;
 import android.widget.Toast;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
-
-import com.google.android.gms.auth.api.signin.GoogleSignIn;
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
-import com.google.android.gms.auth.api.signin.GoogleSignInClient;
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.android.material.button.MaterialButton;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-
 public class MainPainel extends AppCompatActivity {
-    private GoogleSignInClient mGoogleSignInClient;
+    private BottomNavigationView navegacaoInferior;
     private FirebaseAuth mAuth;
-    private TextView textViewEmail;
+    private GoogleSignInOptions gso;
+    private GoogleSignInClient mGoogleSignInClient;
+    private long backPressedTime;
+    private Toast backToast;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_painel);
 
-        // Inicializar Firebase Auth
         mAuth = FirebaseAuth.getInstance();
+        
+        // Configurar botão de sair
+        findViewById(R.id.botao_sair).setOnClickListener(v -> mostrarDialogoSair());
+
+        // Configurar Google Sign In
+        gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+            .requestIdToken(getString(R.string.default_web_client_id))
+            .requestEmail()
+            .build();
+        
+        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+
+        // Carregar o fragmento inicial (Explorar)
+        if (savedInstanceState == null) {
+            getSupportFragmentManager().beginTransaction()
+                .replace(R.id.fragment_container, new ExplorarFragment())
+                .commit();
+        }
 
         // Muda a cor da barra de status e da barra de navegação
         changeStatusBarColor();
         changeNavigationBarColor();
 
         // Ajusta o padding da View principal
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(android.R.id.content), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
 
-        // Configurar Google Sign In
-        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestEmail()
-                .requestId()
-                .requestProfile()
-                .requestIdToken(getString(R.string.google_client_id))
-                .build();
-        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+        // Configurar navegação
+        navegacaoInferior = findViewById(R.id.navegacao_inferior);
+        navegacaoInferior.setSelectedItemId(R.id.navegacao_explorar);
+        navegacaoInferior.setOnItemSelectedListener(item -> {
+            Fragment selectedFragment = null;
+            int itemId = item.getItemId();
 
-        // Verificar autenticação
-        checkAuthentication();
-    }
-
-    private void checkAuthentication() {
-        FirebaseUser firebaseUser = mAuth.getCurrentUser();
-        GoogleSignInAccount googleAccount = GoogleSignIn.getLastSignedInAccount(this);
-
-        if (firebaseUser != null) {
-            // Usuário logado via Firebase
-            setupUserInterface(firebaseUser);
-        } else if (googleAccount != null) {
-            // Usuário logado via Google
-            setupGoogleUserInterface(googleAccount);
-        } else {
-            // Nenhum usuário logado
-            goToMainInicio();
-        }
-    }
-
-    private void setupUserInterface(FirebaseUser user) {
-        // Configurar nome do usuário
-        TextView nomeUsuario = findViewById(R.id.nome_usuario);
-        if (nomeUsuario != null) {
-            String displayName = user.getDisplayName();
-            if (displayName != null && !displayName.isEmpty()) {
-                nomeUsuario.setText(displayName);
-            } else {
-                nomeUsuario.setVisibility(View.GONE);
+            if (itemId == R.id.navegacao_explorar) {
+                selectedFragment = new ExplorarFragment();
+            } else if (itemId == R.id.navegacao_carrinho) {
+                selectedFragment = new CarrinhoFragment();
+            } else if (itemId == R.id.navegacao_perfil) {
+                selectedFragment = new PerfilFragment();
             }
-        }
 
-        // Configurar email do usuário
-        textViewEmail = findViewById(R.id.email_usuario);
-        if (textViewEmail != null) {
-            textViewEmail.setText(user.getEmail());
-        }
-
-        // Configurar botão de logout
-        MaterialButton botaoSair = findViewById(R.id.botao_sair);
-        if (botaoSair != null) {
-            botaoSair.setOnClickListener(v -> signOut());
-        }
-    }
-
-    private void setupGoogleUserInterface(GoogleSignInAccount account) {
-        // Configurar nome do usuário
-        TextView nomeUsuario = findViewById(R.id.nome_usuario);
-        if (nomeUsuario != null) {
-            String displayName = account.getDisplayName();
-            if (displayName != null && !displayName.isEmpty()) {
-                nomeUsuario.setText(displayName);
-            } else {
-                nomeUsuario.setVisibility(View.GONE);
+            if (selectedFragment != null) {
+                getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.fragment_container, selectedFragment)
+                    .commit();
             }
-        }
-
-        // Configurar email do usuário
-        textViewEmail = findViewById(R.id.email_usuario);
-        if (textViewEmail != null) {
-            textViewEmail.setText(account.getEmail());
-        }
-
-        // Configurar botão de logout
-        MaterialButton botaoSair = findViewById(R.id.botao_sair);
-        if (botaoSair != null) {
-            botaoSair.setOnClickListener(v -> signOut());
-        }
+            return true;
+        });
     }
 
-    private void signOut() {
-        // Logout do Firebase
-        if (mAuth.getCurrentUser() != null) {
-            mAuth.signOut();
-        }
-
-        // Logout do Google
-        if (GoogleSignIn.getLastSignedInAccount(this) != null) {
-            mGoogleSignInClient.signOut()
-                .addOnCompleteListener(this, task -> {
-                    goToMainInicio();
-                    Toast.makeText(MainPainel.this, "Logout realizado com sucesso", Toast.LENGTH_SHORT).show();
+    private void mostrarDialogoSair() {
+        new MaterialAlertDialogBuilder(this)
+            .setTitle("Sair")
+            .setMessage("Tem certeza que deseja sair?")
+            .setPositiveButton("Sim", (dialog, which) -> {
+                // Fazer logout do Firebase e Google
+                mAuth.signOut();
+                mGoogleSignInClient.signOut().addOnCompleteListener(task -> {
+                    // Voltar para a tela inicial
+                    Intent intent = new Intent(this, MainInicio.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(intent);
+                    finish();
                 });
-        } else {
-            goToMainInicio();
-            Toast.makeText(MainPainel.this, "Logout realizado com sucesso", Toast.LENGTH_SHORT).show();
-        }
+            })
+            .setNegativeButton("Não", null)
+            .show();
     }
 
-    private void goToMainInicio() {
-        Intent intent = new Intent(MainPainel.this, MainInicio.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        startActivity(intent);
-        finish();
-    }
-
-    // Função para mudar a cor da barra de status
     private void changeStatusBarColor() {
         getWindow().setStatusBarColor(Color.parseColor("#2C3E50"));
     }
 
-    // Função para mudar a cor da barra de navegação
     private void changeNavigationBarColor() {
         getWindow().setNavigationBarColor(Color.parseColor("#2C3E50"));
+    }
+
+    @Override
+    public void onBackPressed() {
+        new MaterialAlertDialogBuilder(this)
+            .setTitle("Sair")
+            .setMessage("Deseja sair do Estetify?")
+            .setPositiveButton("Sim", (dialog, which) -> {
+                finishAffinity(); // Fecha todas as activities
+            })
+            .setNegativeButton("Não", null)
+            .show();
     }
 }

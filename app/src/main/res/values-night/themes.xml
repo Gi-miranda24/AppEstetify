@@ -1,7 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Base.Theme.Estetify" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your dark theme here. -->
-        <!-- <item name="colorPrimary">@color/my_dark_primary</item> -->
+    <style name="Base.Theme.Estetify" parent="Theme.Material3.Dark.NoActionBar">
+        <!-- Cores principais do tema escuro -->
+        <item name="colorPrimary">@color/azul_claro</item>
+        <item name="colorPrimaryContainer">@color/azul_escuro</item>
+        <item name="colorOnPrimary">@color/branco</item>
+        
+        <!-- Cores secundárias -->
+        <item name="colorSecondary">@color/azul</item>
+        <item name="colorSecondaryContainer">@color/azul_marinho</item>
+        <item name="colorOnSecondary">@color/branco</item>
+        
+        <!-- Cores de superfície -->
+        <item name="android:colorBackground">@color/preto</item>
+        <item name="colorSurface">@color/azul_escuro</item>
+        <item name="colorOnSurface">@color/branco</item>
+        
+        <!-- Cores para diálogos -->
+        <item name="materialAlertDialogTheme">@style/ThemeOverlay.App.MaterialAlertDialog.Dark</item>
+        
+        <!-- Barras do sistema -->
+        <item name="android:statusBarColor">@color/preto</item>
+        <item name="android:navigationBarColor">@color/preto</item>
+        
+        <!-- Ripple e estados -->
+        <item name="colorPrimaryInverse">@color/azul_claro</item>
+        <item name="colorSurfaceVariant">@color/azul_escuro</item>
+        <item name="colorOnSurfaceVariant">@color/branco</item>
+    </style>
+
+    <!-- Estilo para diálogos no modo escuro -->
+    <style name="ThemeOverlay.App.MaterialAlertDialog.Dark" parent="ThemeOverlay.Material3.MaterialAlertDialog">
+        <item name="colorPrimary">@color/azul_claro</item>
+        <item name="colorSurface">@color/azul_escuro</item>
+        <item name="colorOnSurface">@color/branco</item>
+        <item name="buttonBarPositiveButtonStyle">@style/PositiveButtonStyle.Dark</item>
+        <item name="buttonBarNegativeButtonStyle">@style/NegativeButtonStyle.Dark</item>
+        <item name="materialAlertDialogTitleTextStyle">@style/DialogTitleStyle.Dark</item>
+        <item name="materialAlertDialogBodyTextStyle">@style/DialogBodyStyle.Dark</item>
+    </style>
+
+    <!-- Estilo para título do diálogo no modo escuro -->
+    <style name="DialogTitleStyle.Dark" parent="MaterialAlertDialog.Material3.Title.Text">
+        <item name="android:textColor">@color/branco</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <!-- Estilo para corpo do diálogo no modo escuro -->
+    <style name="DialogBodyStyle.Dark" parent="MaterialAlertDialog.Material3.Body.Text">
+        <item name="android:textColor">@color/branco</item>
+    </style>
+
+    <!-- Estilo para botão positivo no modo escuro -->
+    <style name="PositiveButtonStyle.Dark" parent="Widget.Material3.Button.TextButton.Dialog">
+        <item name="android:textColor">@color/azul_claro</item>
+        <item name="rippleColor">@color/azul_claro</item>
+    </style>
+
+    <!-- Estilo para botão negativo no modo escuro -->
+    <style name="NegativeButtonStyle.Dark" parent="Widget.Material3.Button.TextButton.Dialog">
+        <item name="android:textColor">@color/azul_claro</item>
+        <item name="rippleColor">@color/azul_claro</item>
     </style>
 </resources>

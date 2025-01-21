@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/navegacao_carrinho"
+        android:icon="@drawable/icone_carrinho"
+        android:title="Carrinho" />
+
+    <item
+        android:id="@+id/navegacao_explorar"
+        android:icon="@drawable/icone_explorar"
+        android:title="Explorar" />
+
+    <item
+        android:id="@+id/navegacao_perfil"
+        android:icon="@drawable/icone_conta"
+        android:title="Perfil" />
+</menu>

@@ -107,7 +107,7 @@
             <ImageView
                 android:id="@+id/icone_email"
                 android:layout_width="320dp"
-                android:layout_height="28dp"
+                android:layout_height="24dp"
                 android:paddingStart="15dp"
                 android:scaleType="fitStart"
                 android:src="@drawable/icone_email"
@@ -166,7 +166,7 @@
             <ImageView
                 android:id="@+id/icone_senha"
                 android:layout_width="320dp"
-                android:layout_height="28dp"
+                android:layout_height="24dp"
                 android:paddingStart="15dp"
                 android:scaleType="fitStart"
                 android:src="@drawable/icone_senha"
@@ -245,7 +245,7 @@
                 android:layout_height="32dp"
                 android:layout_gravity="center"
                 android:visibility="gone"
-                android:indeterminateTint="@color/branco"
+                android:indeterminateTint="@color/azul"
                 android:layout_marginTop="-44dp"/>
 
         </LinearLayout>

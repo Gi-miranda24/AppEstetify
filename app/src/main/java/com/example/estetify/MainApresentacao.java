@@ -17,8 +17,13 @@ import androidx.core.graphics.Insets; // Classe para lidar com insets (espaços 
 import androidx.core.view.ViewCompat; // Classe que fornece métodos para manipulação de Views
 import androidx.core.view.WindowInsetsCompat; // Classe que fornece suporte para insets de janelas
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+
 // Classe principal da atividade de apresentação
 public class MainApresentacao extends AppCompatActivity {
+
+    private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,7 +44,6 @@ public class MainApresentacao extends AppCompatActivity {
 
         // Inicializa os elementos de interface
         ImageView logotipo = findViewById(R.id.logotipo);
-        Button fundo_logotipo = findViewById(R.id.fundo_logotipo);
         TextView texto_rodape = findViewById(R.id.texto_rodape);
 
         // Cria animações para os elementos
@@ -51,20 +55,30 @@ public class MainApresentacao extends AppCompatActivity {
         fadeInTextoRodape.setDuration(500);
         fadeInTextoRodape.setStartDelay(0);
 
-        ObjectAnimator fadeInFundoLogoTipo = ObjectAnimator.ofFloat(fundo_logotipo, "alpha", 0f, 1f);
-        fadeInTextoRodape.setDuration(500);
-        fadeInTextoRodape.setStartDelay(0);
-
         AnimatorSet animatorSet = new AnimatorSet();
-        animatorSet.playTogether(fadeInLogoTipo, fadeInTextoRodape, fadeInFundoLogoTipo);
+        animatorSet.playTogether(fadeInLogoTipo, fadeInTextoRodape);
         animatorSet.start(); // Inicia as animações
 
-        // Adiciona o atraso antes de iniciar a próxima atividade
-        new Handler(Looper.getMainLooper()).postDelayed(() -> {
-            Intent intent = new Intent(MainApresentacao.this, MainIntroducao.class);
-            startActivity(intent); // Inicia a próxima atividade
-            finish(); // Finaliza a atividade atual
-        }, 1000); // 1000 ms = 1 segundo
+        mAuth = FirebaseAuth.getInstance();
+
+        // Atrasar a verificação de login
+        new Handler(Looper.getMainLooper()).postDelayed(() -> verificarUsuarioLogado(), 1000); // 1 segundo de atraso
+    }
+
+    private void verificarUsuarioLogado() {
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        if (currentUser != null) {
+            // Usuário está logado, redirecionar para MainPainel
+            startActivity(new Intent(MainApresentacao.this, MainPainel.class));
+            finish();
+        } else {
+            // Usuário não está logado, permanecer na tela de apresentação
+            new Handler(Looper.getMainLooper()).postDelayed(() -> {
+                Intent intent = new Intent(MainApresentacao.this, MainIntroducao.class);
+                startActivity(intent); // Inicia a próxima atividade
+                finish(); // Finaliza a atividade atual
+            }, 1000); // 1000 ms = 1 segundo
+        }
     }
 
     // Função para mudar a cor da barra de status

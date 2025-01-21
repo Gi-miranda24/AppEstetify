@@ -8,70 +8,34 @@
     android:background="@color/azul_escuro"
     tools:context=".MainPainel">
 
-    <ImageView
-        android:id="@+id/logotipo"
-        android:layout_width="128dp"
-        android:layout_height="48dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:scaleType="fitCenter"
-        android:src="@drawable/icone_logotipo_texto"
-        app:layout_constraintStart_toStartOf="parent"
+    <FrameLayout
+        android:id="@+id/fragment_container"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/navegacao_inferior"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <LinearLayout
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/navegacao_inferior"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:gravity="center"
-        android:padding="16dp"
+        android:layout_gravity="bottom"
+        android:background="@color/cinza_escuro"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:itemIconTint="@color/branco"
+        app:itemTextColor="@color/branco"
+        app:menu="@menu/menu_navegacao_inferior" />
+
+        <ImageButton
+        android:id="@+id/botao_sair"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:src="@drawable/ic_logout"
+        android:contentDescription="Sair"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent">
-
-        <TextView
-            android:id="@+id/texto_bem_vindo"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Bem-vindo(a)!"
-            android:textSize="24sp"
-            android:textStyle="bold"
-            android:textColor="@color/branco"
-            android:fontFamily="@font/fonte_inter"
-            android:layout_marginBottom="8dp" />
-
-        <TextView
-            android:id="@+id/nome_usuario"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="20sp"
-            android:textColor="@color/branco"
-            android:fontFamily="@font/fonte_inter"
-            android:layout_marginBottom="16dp"
-            tools:text="Nome do Usuário" />
-
-        <TextView
-            android:id="@+id/email_usuario"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="16sp"
-            android:textColor="@color/branco"
-            android:fontFamily="@font/fonte_inter"
-            android:layout_marginBottom="32dp"
-            tools:text="usuario@email.com" />
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/botao_sair"
-            android:layout_width="320dp"
-            android:layout_height="64dp"
-            android:text="Sair da Conta"
-            android:textSize="16sp"
-            android:textColor="@color/branco"
-            android:fontFamily="@font/fonte_inter"
-            app:backgroundTint="@color/transparente"
-            app:cornerRadius="10dp"
-            app:strokeColor="@color/branco"
-            app:strokeWidth="4dp" />
-
-    </LinearLayout>
+        app:layout_constraintEnd_toEndOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

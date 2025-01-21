@@ -1,0 +1,330 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/azul_escuro">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:padding="16dp">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginBottom="16dp">
+
+                    <ImageButton
+                        android:id="@+id/botao_editar_foto"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:padding="4dp"
+                        android:background="@drawable/background_circle_white"
+                        android:src="@drawable/ic_edit"
+                        android:layout_marginEnd="8dp"
+                        android:layout_marginBottom="8dp"
+                        android:elevation="2dp"
+                        android:contentDescription="Editar foto de perfil"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"/>
+
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/foto_perfil"
+                        android:layout_width="128dp"
+                        android:layout_height="128dp"
+                        android:src="@drawable/icone_conta"
+                        app:civ_border_width="4dp"
+                        app:civ_border_color="@color/branco"/>
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <TextView
+                    android:id="@+id/texto_bem_vindo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Meu Perfil"
+                    android:textSize="24sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/branco"
+                    android:fontFamily="@font/fonte_inter"
+                    android:layout_marginBottom="24dp" />
+
+                <!-- Container para campos de informação -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp"
+                    android:background="@drawable/background_rounded_white"
+                    android:layout_marginBottom="24dp">
+
+                    <!-- Nome -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:layout_marginBottom="16dp">
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Nome"
+                                android:textSize="12sp"
+                                android:textColor="@color/cinza_escuro"
+                                android:fontFamily="@font/fonte_inter"/>
+
+                            <TextView
+                                android:id="@+id/nome_usuario"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textSize="16sp"
+                                android:textColor="@color/preto"
+                                android:fontFamily="@font/fonte_inter"
+                                tools:text="Nome do Usuário" />
+                        </LinearLayout>
+
+                        <ImageButton
+                            android:id="@+id/botao_editar_nome"
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:src="@drawable/ic_edit"
+                            android:background="?attr/selectableItemBackgroundBorderless"
+                            android:tint="@color/azul_escuro"/>
+                    </LinearLayout>
+
+                    <!-- Email -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:layout_marginBottom="16dp">
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="E-mail"
+                                android:textSize="12sp"
+                                android:textColor="@color/cinza_escuro"
+                                android:fontFamily="@font/fonte_inter"/>
+
+                            <TextView
+                                android:id="@+id/email_usuario"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textSize="16sp"
+                                android:textColor="@color/preto"
+                                android:fontFamily="@font/fonte_inter"
+                                tools:text="usuario@email.com" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <!-- CPF -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:layout_marginBottom="16dp">
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="CPF"
+                                android:textSize="12sp"
+                                android:textColor="@color/cinza_escuro"
+                                android:fontFamily="@font/fonte_inter"/>
+
+                            <TextView
+                                android:id="@+id/cpf_usuario"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textSize="16sp"
+                                android:textColor="@color/preto"
+                                android:fontFamily="@font/fonte_inter"
+                                tools:text="123.456.789-00" />
+                        </LinearLayout>
+
+                        <ImageButton
+                            android:id="@+id/botao_editar_cpf"
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:src="@drawable/ic_edit"
+                            android:background="?attr/selectableItemBackgroundBorderless"
+                            android:tint="@color/azul_escuro"/>
+                    </LinearLayout>
+
+                    <!-- Gênero -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:layout_marginBottom="16dp">
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Gênero"
+                                android:textSize="12sp"
+                                android:textColor="@color/cinza_escuro"
+                                android:fontFamily="@font/fonte_inter"/>
+
+                            <TextView
+                                android:id="@+id/genero_usuario"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textSize="16sp"
+                                android:textColor="@color/preto"
+                                android:fontFamily="@font/fonte_inter"
+                                tools:text="Não informado" />
+                        </LinearLayout>
+
+                        <ImageButton
+                            android:id="@+id/botao_editar_genero"
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:src="@drawable/ic_edit"
+                            android:background="?attr/selectableItemBackgroundBorderless"
+                            android:tint="@color/azul_escuro"/>
+                    </LinearLayout>
+
+                    <!-- Endereço -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:layout_marginBottom="16dp">
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Endereço"
+                                android:textSize="12sp"
+                                android:textColor="@color/cinza_escuro"
+                                android:fontFamily="@font/fonte_inter"/>
+
+                            <TextView
+                                android:id="@+id/endereco_usuario"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textSize="16sp"
+                                android:textColor="@color/preto"
+                                android:fontFamily="@font/fonte_inter"
+                                tools:text="Rua Exemplo, 123" />
+                        </LinearLayout>
+
+                        <ImageButton
+                            android:id="@+id/botao_editar_endereco"
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:src="@drawable/ic_edit"
+                            android:background="?attr/selectableItemBackgroundBorderless"
+                            android:tint="@color/azul_escuro"/>
+                    </LinearLayout>
+                </LinearLayout>
+
+                <!-- Botões -->
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/botao_alterar_senha"
+                    android:layout_width="320dp"
+                    android:layout_height="64dp"
+                    android:text="Alterar Senha"
+                    android:textAllCaps="false"
+                    android:textSize="16sp"
+                    android:textColor="@color/preto"
+                    android:fontFamily="@font/fonte_inter"
+                    app:icon="@drawable/ic_lock"
+                    app:iconTint="@color/preto"
+                    app:backgroundTint="@color/branco"
+                    app:strokeColor="@color/branco"
+                    app:strokeWidth="6dp"
+                    app:cornerRadius="10dp"
+                    android:layout_marginTop="8px"
+                    android:layout_marginBottom="8px"/>
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/botao_historico"
+                    android:layout_width="320dp"
+                    android:layout_height="64dp"
+                    android:text="Histórico"
+                    android:textAllCaps="false"
+                    android:textSize="16sp"
+                    android:textColor="@color/preto"
+                    android:fontFamily="@font/fonte_inter"
+                    app:icon="@drawable/ic_history"
+                    app:iconTint="@color/preto"
+                    app:backgroundTint="@color/branco"
+                    app:strokeColor="@color/branco"
+                    app:strokeWidth="6dp"
+                    app:cornerRadius="10dp"
+                    android:layout_marginTop="8px"
+                    android:layout_marginBottom="8px"/>
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/botao_excluir_conta"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Excluir conta"
+                    android:textColor="@color/branco"
+                    android:backgroundTint="@color/vermelho"
+                    android:layout_marginTop="16dp"
+                    app:cornerRadius="8dp" />
+
+            </LinearLayout>
+        </ScrollView>
+
+        <ProgressBar
+            android:id="@+id/loading_perfil"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:visibility="gone"
+            android:indeterminateTintMode="src_atop"
+            android:indeterminateTint="@color/azul"/>
+    </FrameLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

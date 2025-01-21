@@ -11,6 +11,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -32,14 +33,18 @@ import com.google.firebase.auth.UserProfileChangeRequest;
 // Classe principal da atividade de apresentação
 public class MainRegistrar extends AppCompatActivity {
 
-    private EditText campoSenha; // Declaração do EditText para a senha
-    private EditText campoNomeCompleto;
+    private EditText campoNomeCompleto; // Declaração do EditText para o nome completo
     private EditText campoEmail;
+    private EditText campoSenha; // Declaração do EditText para a senha
     private EditText campoRepetirSenha;
     private CheckBox mostrarSenha; // Declaração da CheckBox para mostrar/ocultar senhas
     private FirebaseAuth mAuth;
     private ProgressBar loadingRegistrar;
     private MaterialButton botaoCriar;
+    private ImageView iconeNome;
+    private ImageView iconeEmail;
+    private ImageView iconeSenha;
+    private ImageView iconeRepetirSenha;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,6 +74,12 @@ public class MainRegistrar extends AppCompatActivity {
         mostrarSenha = findViewById(R.id.mostrar_senha);
         loadingRegistrar = findViewById(R.id.loading_registrar);
         botaoCriar = findViewById(R.id.botao_criar);
+        
+        // Corrigindo os IDs dos ícones
+        iconeNome = findViewById(R.id.icone_nome_completo);
+        iconeEmail = findViewById(R.id.icone_email);
+        iconeSenha = findViewById(R.id.icone_senha);
+        iconeRepetirSenha = findViewById(R.id.icone_repetir_senha);
 
         // Configurar o listener do CheckBox mostrar senha
         mostrarSenha.setOnCheckedChangeListener((buttonView, isChecked) -> {
@@ -106,25 +117,52 @@ public class MainRegistrar extends AppCompatActivity {
 
         configurarValidacaoSenha();
 
-        // Configurar os listeners de foco para cada campo
+        // Cor azul e cinza dos ícones
+        int corAzul = Color.parseColor("#2196F3");
+        int corCinza = Color.parseColor("#FFFFFF");
+
+        // Listener para o campo de nome completo
         campoNomeCompleto.setOnFocusChangeListener((v, hasFocus) -> {
             int color = hasFocus ? R.color.azul : R.color.branco;
             corpoNomeCompleto.setStrokeColor(ColorStateList.valueOf(ContextCompat.getColor(MainRegistrar.this, color)));
+            if (hasFocus) {
+                iconeNome.setColorFilter(corAzul);
+            } else {
+                iconeNome.setColorFilter(corCinza);
+            }
         });
 
+        // Listener para o campo de email
         campoEmail.setOnFocusChangeListener((v, hasFocus) -> {
             int color = hasFocus ? R.color.azul : R.color.branco;
             corpoEmail.setStrokeColor(ColorStateList.valueOf(ContextCompat.getColor(MainRegistrar.this, color)));
+            if (hasFocus) {
+                iconeEmail.setColorFilter(corAzul);
+            } else {
+                iconeEmail.setColorFilter(corCinza);
+            }
         });
 
+        // Listener para o campo de senha
         campoSenha.setOnFocusChangeListener((v, hasFocus) -> {
             int color = hasFocus ? R.color.azul : R.color.branco;
             corpoSenha.setStrokeColor(ColorStateList.valueOf(ContextCompat.getColor(MainRegistrar.this, color)));
+            if (hasFocus) {
+                iconeSenha.setColorFilter(corAzul);
+            } else {
+                iconeSenha.setColorFilter(corCinza);
+            }
         });
 
+        // Listener para o campo de repetir senha
         campoRepetirSenha.setOnFocusChangeListener((v, hasFocus) -> {
             int color = hasFocus ? R.color.azul : R.color.branco;
             corpoRepetirSenha.setStrokeColor(ColorStateList.valueOf(ContextCompat.getColor(MainRegistrar.this, color)));
+            if (hasFocus) {
+                iconeRepetirSenha.setColorFilter(corAzul);
+            } else {
+                iconeRepetirSenha.setColorFilter(corCinza);
+            }
         });
 
         // Configurar click do botão criar

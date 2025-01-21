@@ -20,6 +20,10 @@
             "package_name": "com.example.estetify",
             "certificate_hash": "c34830438d25bd62639ca5325f57fb1361f0eaeb"
           }
+        },
+        {
+          "client_id": "635129675862-3s4suurb100iuhtev598nbaf4kal8aj4.apps.googleusercontent.com",
+          "client_type": 3
         }
       ],
       "api_key": [
@@ -29,7 +33,12 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "635129675862-3s4suurb100iuhtev598nbaf4kal8aj4.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }
