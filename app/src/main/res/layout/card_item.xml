@@ -30,8 +30,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="18sp"
-                android:textStyle="bold"
-                android:fontFamily="@font/fonte_inter"/>
+                android:textStyle="bold"/>
 
             <TextView
                 android:id="@+id/item_description"
@@ -39,8 +38,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 android:maxLines="2"
-                android:ellipsize="end"
-                android:fontFamily="@font/fonte_inter"/>
+                android:ellipsize="end"/>
 
             <TextView
                 android:id="@+id/item_price"
@@ -49,8 +47,7 @@
                 android:layout_marginTop="8dp"
                 android:textColor="@color/azul"
                 android:textSize="16sp"
-                android:textStyle="bold"
-                android:fontFamily="@font/fonte_inter"/>
+                android:textStyle="bold"/>
 
         </LinearLayout>
 

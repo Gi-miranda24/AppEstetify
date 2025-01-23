@@ -32,6 +32,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="16sp"
+                android:textColor="@color/preto"
                 android:textStyle="bold"
                 android:fontFamily="@font/fonte_inter"/>
 
@@ -40,6 +41,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="14sp"
+                android:textColor="@color/cinza_claro"
                 android:fontFamily="@font/fonte_inter"
                 android:layout_marginTop="4dp"/>
 

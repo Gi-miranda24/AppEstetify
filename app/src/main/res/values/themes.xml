@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
-    
-    <style name="Base.Theme.Estetify" parent="Theme.Material3.DayNight.NoActionBar">
+    <!-- Base application theme. -->
+    <style name="Base.Theme.Estetify" parent="Theme.Material3.Light.NoActionBar">
         <!-- Cores principais do tema -->
         <item name="colorPrimary">@color/azul_escuro</item>
         <item name="colorPrimaryContainer">@color/azul_marinho</item>
@@ -15,7 +15,7 @@
         <!-- Cores de superfície -->
         <item name="android:colorBackground">@color/branco</item>
         <item name="colorSurface">@color/cinza_claro</item>
-        <item name="colorOnSurface">@color/branco</item>
+        <item name="colorOnSurface">@color/azul_escuro</item>
         
         <!-- Cores para diálogos -->
         <item name="materialAlertDialogTheme">@style/ThemeOverlay.App.MaterialAlertDialog</item>
@@ -27,19 +27,14 @@
         <!-- Ripple e estados -->
         <item name="colorPrimaryInverse">@color/azul_claro</item>
         <item name="colorSurfaceVariant">@color/cinza_claro</item>
-        <item name="colorOnSurfaceVariant">@color/branco</item>
-
-        <!-- Cores de texto -->
-        <item name="android:textColor">@color/branco</item>
-        <item name="android:textColorPrimary">@color/branco</item>
-        <item name="android:textColorSecondary">@color/branco</item>
+        <item name="colorOnSurfaceVariant">@color/azul_escuro</item>
     </style>
 
     <!-- Estilo para diálogos -->
     <style name="ThemeOverlay.App.MaterialAlertDialog" parent="ThemeOverlay.Material3.MaterialAlertDialog">
         <item name="colorPrimary">@color/azul_claro</item>
         <item name="colorSurface">@color/branco</item>
-        <item name="colorOnSurface">@color/branco</item>
+        <item name="colorOnSurface">@color/azul_escuro</item>
         <item name="buttonBarPositiveButtonStyle">@style/PositiveButtonStyle</item>
         <item name="buttonBarNegativeButtonStyle">@style/NegativeButtonStyle</item>
         <item name="materialAlertDialogTitleTextStyle">@style/DialogTitleStyle</item>
@@ -48,13 +43,13 @@
 
     <!-- Estilo para título do diálogo -->
     <style name="DialogTitleStyle" parent="MaterialAlertDialog.Material3.Title.Text">
-        <item name="android:textColor">@color/branco</item>
+        <item name="android:textColor">@color/azul_escuro</item>
         <item name="android:textStyle">bold</item>
     </style>
 
     <!-- Estilo para corpo do diálogo -->
     <style name="DialogBodyStyle" parent="MaterialAlertDialog.Material3.Body.Text">
-        <item name="android:textColor">@color/branco</item>
+        <item name="android:textColor">@color/azul_escuro</item>
     </style>
 
     <!-- Estilo para botão positivo -->
