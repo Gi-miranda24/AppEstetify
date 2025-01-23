@@ -37,6 +37,15 @@ public class ItemFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        
+        if (savedInstanceState != null) {
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
+                item = savedInstanceState.getSerializable("item", Item.class);
+            } else {
+                item = (Item) savedInstanceState.getSerializable("item");
+            }
+        }
+        
         // Verificar autenticação
         AuthVerification.verificarAutenticacao(this, getParentFragmentManager());
         
@@ -59,6 +68,14 @@ public class ItemFragment extends Fragment {
                     .commit();
             }
         });
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        if (item != null) {
+            outState.putSerializable("item", item);
+        }
     }
 
     @Override

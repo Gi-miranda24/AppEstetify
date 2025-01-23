@@ -44,6 +44,12 @@ public class LojaFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        
+        if (savedInstanceState != null) {
+            lojaId = savedInstanceState.getString("lojaId");
+            currentFilter = savedInstanceState.getString("currentFilter", "servicos");
+        }
+        
         // Verificar autenticação
         AuthVerification.verificarAutenticacao(this, getParentFragmentManager());
         
@@ -63,6 +69,13 @@ public class LojaFragment extends Fragment {
                     .commit();
             }
         });
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString("lojaId", lojaId);
+        outState.putString("currentFilter", currentFilter);
     }
 
     @Override
