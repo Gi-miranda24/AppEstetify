@@ -3,37 +3,32 @@ package com.example.estetify;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
+import android.text.InputFilter;
+import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.app.AlertDialog;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.fragment.app.Fragment;
+import com.bumptech.glide.Glide;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.SetOptions;
 import de.hdodenhof.circleimageview.CircleImageView;
-import com.bumptech.glide.Glide;
 import java.util.HashMap;
 import java.util.Map;
-import android.text.InputType;
-import android.text.InputFilter;
-import com.google.android.gms.auth.api.signin.GoogleSignIn;
-import com.google.android.gms.auth.api.signin.GoogleSignInClient;
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 
 public class PerfilFragment extends Fragment {
     private TextView nomeUsuario;
@@ -49,10 +44,29 @@ public class PerfilFragment extends Fragment {
     private FirebaseFirestore db;
     private ProgressBar loadingPerfil;
     
+    /**
+     * Manipulador de resultado para selecionar imagem da galeria.
+     * Quando uma imagem é selecionada, chama o método atualizarFotoPerfil.
+     */
     private final ActivityResultLauncher<String> pegarImagem = registerForActivityResult(
         new ActivityResultContracts.GetContent(),
         this::atualizarFotoPerfil
     );
+
+    /**
+     * Método chamado quando o fragmento é criado.
+     * Inicializa a interface do usuário e configura os serviços necessários.
+     * @param inflater Inflador de layout
+     * @param container Container pai
+     * @param savedInstanceState Estado salvo da instância
+     * @return View raiz do fragmento
+     */
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // Verificar autenticação
+        AuthVerification.verificarAutenticacao(this, getParentFragmentManager());
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -77,14 +91,14 @@ public class PerfilFragment extends Fragment {
         // Configurar cliques dos botões
         configurarBotoes();
 
-        // Simular carregamento
-        new Handler(Looper.getMainLooper()).postDelayed(() -> {
-            loadingPerfil.setVisibility(View.GONE);
-        }, 1000);
-
         return view;
     }
 
+    /**
+     * Inicializa todas as views do fragmento e configura os listeners
+     * dos botões de edição.
+     * @param view View raiz do fragmento
+     */
     private void inicializarViews(View view) {
         nomeUsuario = view.findViewById(R.id.nome_usuario);
         emailUsuario = view.findViewById(R.id.email_usuario);
@@ -105,6 +119,10 @@ public class PerfilFragment extends Fragment {
         view.findViewById(R.id.botao_excluir_conta).setOnClickListener(v -> excluirConta());
     }
 
+    /**
+     * Configura os listeners dos botões principais do perfil
+     * (alterar senha e histórico).
+     */
     private void configurarBotoes() {
         botaoAlterarSenha.setOnClickListener(v -> mostrarDialogoAlterarSenha());
         botaoHistorico.setOnClickListener(v -> {
@@ -114,6 +132,10 @@ public class PerfilFragment extends Fragment {
         });
     }
 
+    /**
+     * Configura as informações do usuário na interface.
+     * Carrega dados do Firebase Authentication e Firestore.
+     */
     private void setupUserInfo() {
         FirebaseUser firebaseUser = mAuth.getCurrentUser();
 
@@ -135,12 +157,25 @@ public class PerfilFragment extends Fragment {
                         generoUsuario.setText(genero != null ? genero : "Não informado");
                         enderecoUsuario.setText(endereco != null ? endereco : "Não informado");
                     }
+                    
+                    // Carregar foto após os dados
+                    carregarFotoPerfil(firebaseUser.getUid());
+                })
+                .addOnFailureListener(e -> {
+                    Toast.makeText(requireContext(),
+                        "Erro ao carregar dados do usuário",
+                        Toast.LENGTH_SHORT).show();
+                    loadingPerfil.setVisibility(View.GONE);
                 });
-            
-            carregarFotoPerfil(firebaseUser.getUid());
+        } else {
+            loadingPerfil.setVisibility(View.GONE);
         }
     }
 
+    /**
+     * Carrega a foto de perfil do usuário do Firestore.
+     * @param userId ID do usuário no Firebase
+     */
     private void carregarFotoPerfil(String userId) {
         db.collection("usuarios")
             .document(userId)
@@ -155,14 +190,21 @@ public class PerfilFragment extends Fragment {
                             .into(fotoPerfil);
                     }
                 }
+                // Esconder loading após carregar a foto
+                loadingPerfil.setVisibility(View.GONE);
             })
             .addOnFailureListener(e -> {
                 Toast.makeText(requireContext(),
                     "Erro ao carregar foto de perfil",
                     Toast.LENGTH_SHORT).show();
+                loadingPerfil.setVisibility(View.GONE);
             });
     }
 
+    /**
+     * Exibe um diálogo para editar o nome do usuário.
+     * Atualiza o nome no Firebase Authentication.
+     */
     private void mostrarDialogoEditarNome() {
         View dialogView = getLayoutInflater().inflate(R.layout.dialog_editar_campo, null);
         EditText campoNome = dialogView.findViewById(R.id.campo_texto);
@@ -200,6 +242,10 @@ public class PerfilFragment extends Fragment {
             .show();
     }
 
+    /**
+     * Exibe um diálogo para editar o CPF do usuário.
+     * Valida e formata o CPF antes de salvar no Firestore.
+     */
     private void mostrarDialogoEditarCPF() {
         View dialogView = getLayoutInflater().inflate(R.layout.dialog_editar_campo, null);
         EditText campoCPF = dialogView.findViewById(R.id.campo_texto);
@@ -244,10 +290,19 @@ public class PerfilFragment extends Fragment {
             .show();
     }
 
+    /**
+     * Formata um CPF adicionando pontos e traço.
+     * @param cpf CPF sem formatação (apenas números)
+     * @return CPF formatado (XXX.XXX.XXX-XX)
+     */
     private String formatarCPF(String cpf) {
         return cpf.replaceAll("(\\d{3})(\\d{3})(\\d{3})(\\d{2})", "$1.$2.$3-$4");
     }
 
+    /**
+     * Exibe um diálogo para selecionar o gênero do usuário.
+     * Salva a seleção no Firestore.
+     */
     private void mostrarDialogoEditarGenero() {
         String[] generos = getResources().getStringArray(R.array.generos);
         new MaterialAlertDialogBuilder(requireContext())
@@ -276,6 +331,10 @@ public class PerfilFragment extends Fragment {
             .show();
     }
 
+    /**
+     * Exibe um diálogo para editar o endereço do usuário.
+     * Salva o novo endereço no Firestore.
+     */
     private void mostrarDialogoEditarEndereco() {
         View dialogView = getLayoutInflater().inflate(R.layout.dialog_editar_campo, null);
         EditText campoEndereco = dialogView.findViewById(R.id.campo_texto);
@@ -314,6 +373,10 @@ public class PerfilFragment extends Fragment {
             .show();
     }
 
+    /**
+     * Exibe um diálogo com opções para gerenciar a foto de perfil
+     * (mudar ou remover foto).
+     */
     private void mostrarOpcoesEditarFoto() {
         String[] opcoes = {"Mudar foto de perfil", "Remover foto"};
         
@@ -331,6 +394,10 @@ public class PerfilFragment extends Fragment {
             .show();
     }
 
+    /**
+     * Remove a foto de perfil do usuário.
+     * Atualiza o Firestore e a interface.
+     */
     private void removerFotoPerfil() {
         FirebaseUser user = mAuth.getCurrentUser();
         if (user != null) {
@@ -354,6 +421,10 @@ public class PerfilFragment extends Fragment {
         }
     }
 
+    /**
+     * Exibe um diálogo para iniciar o processo de alteração de senha.
+     * Envia um email de redefinição de senha para o usuário.
+     */
     private void mostrarDialogoAlterarSenha() {
         FirebaseUser user = mAuth.getCurrentUser();
         if (user != null && user.getEmail() != null) {
@@ -380,6 +451,10 @@ public class PerfilFragment extends Fragment {
         }
     }
 
+    /**
+     * Inicia o processo de exclusão da conta do usuário.
+     * Exibe um diálogo de confirmação antes de prosseguir.
+     */
     private void excluirConta() {
         FirebaseUser user = mAuth.getCurrentUser();
         if (user != null) {
@@ -421,6 +496,11 @@ public class PerfilFragment extends Fragment {
         }
     }
 
+    /**
+     * Exclui a conta do usuário do Firebase Authentication.
+     * Redireciona para a tela inicial após a exclusão.
+     * @param user Usuário do Firebase a ser excluído
+     */
     private void excluirContaFirebase(FirebaseUser user) {
         user.delete()
             .addOnSuccessListener(aVoid -> {
@@ -440,6 +520,11 @@ public class PerfilFragment extends Fragment {
             });
     }
 
+    /**
+     * Atualiza a foto de perfil do usuário com a nova imagem selecionada.
+     * Salva a URL da imagem no Firestore e atualiza a interface.
+     * @param imageUri URI da nova imagem de perfil
+     */
     private void atualizarFotoPerfil(Uri imageUri) {
         if (imageUri != null) {
             FirebaseUser user = mAuth.getCurrentUser();

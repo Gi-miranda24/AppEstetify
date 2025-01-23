@@ -2,8 +2,8 @@ package com.example.estetify;
 
 import android.content.Intent;
 import android.content.res.ColorStateList;
-import android.graphics.Color; // Classe para manipulação de cores
-import android.os.Bundle; // Classe para gerenciar o estado da atividade
+import android.graphics.Color;
+import android.os.Bundle;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
@@ -13,16 +13,18 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.appcompat.app.AppCompatActivity; // Classe base para atividades que utilizam a biblioteca de compatibilidade
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
-import androidx.core.graphics.Insets; // Classe para lidar com insets (espaços ocupados pelas barras do sistema)
-import androidx.core.view.ViewCompat; // Classe que fornece métodos para manipulação de Views
-import androidx.core.view.WindowInsetsCompat; // Classe que fornece suporte para insets de janelas
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.textview.MaterialTextView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
@@ -30,145 +32,167 @@ import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
 
-// Classe principal da atividade de apresentação
 public class MainRegistrar extends AppCompatActivity {
 
-    private EditText campoNomeCompleto; // Declaração do EditText para o nome completo
+    // Constantes
+    private static final String COR_AZUL = "#2196F3";
+    private static final String COR_CINZA = "#FFFFFF";
+    private static final String COR_BARRA_SISTEMA = "#2C3E50";
+
+    // Campos de entrada
+    private EditText campoNomeCompleto;
     private EditText campoEmail;
-    private EditText campoSenha; // Declaração do EditText para a senha
+    private EditText campoSenha;
     private EditText campoRepetirSenha;
-    private CheckBox mostrarSenha; // Declaração da CheckBox para mostrar/ocultar senhas
-    private FirebaseAuth mAuth;
+    private CheckBox mostrarSenha;
+
+    // Elementos UI
     private ProgressBar loadingRegistrar;
     private MaterialButton botaoCriar;
     private ImageView iconeNome;
     private ImageView iconeEmail;
     private ImageView iconeSenha;
     private ImageView iconeRepetirSenha;
+    private ImageView iconeCheck;
 
+    // Firebase
+    private FirebaseAuth mAuth;
+
+    /**
+     * Método chamado quando a activity é criada.
+     * Inicializa todos os componentes e configurações necessárias.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState); // Chama o metodo onCreate da classe base (superclasse)
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_registrar);
 
-        setContentView(R.layout.activity_registrar); // Define o layout da atividade usando o arquivo XML 'activity_apresentacao'
+        inicializarFirebase();
+        configurarBarrasSistema();
+        inicializarViews();
+        configurarCampos();
+        configurarBotoes();
+    }
 
-        // Inicializar Firebase Auth
+    /**
+     * Inicializa a instância do Firebase Authentication.
+     */
+    private void inicializarFirebase() {
         mAuth = FirebaseAuth.getInstance();
+    }
 
-        // Muda a cor da barra de status e da barra de navegação
+    /**
+     * Configura as cores e comportamento das barras de sistema (status e navegação).
+     */
+    private void configurarBarrasSistema() {
         changeStatusBarColor();
         changeNavigationBarColor();
-
-       // Ajusta o padding da View principal para que o conteúdo não ocupe o espaço das barras do sistema
+        
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets; // Retorna os insets para que o sistema continue o processamento normal de insets
+            return insets;
         });
+    }
 
-        // Inicialização dos campos
+    /**
+     * Inicializa todas as views (campos de texto, botões, ícones) da interface.
+     */
+    private void inicializarViews() {
+        // Campos de entrada
         campoNomeCompleto = findViewById(R.id.campo_nome_completo);
         campoEmail = findViewById(R.id.campo_email);
         campoSenha = findViewById(R.id.campo_senha);
         campoRepetirSenha = findViewById(R.id.campo_repetir_senha);
         mostrarSenha = findViewById(R.id.mostrar_senha);
+        iconeCheck = findViewById(R.id.icone_check_senha);
+        
+        // Elementos UI
         loadingRegistrar = findViewById(R.id.loading_registrar);
         botaoCriar = findViewById(R.id.botao_criar);
         
-        // Corrigindo os IDs dos ícones
+        // Ícones
         iconeNome = findViewById(R.id.icone_nome_completo);
         iconeEmail = findViewById(R.id.icone_email);
         iconeSenha = findViewById(R.id.icone_senha);
         iconeRepetirSenha = findViewById(R.id.icone_repetir_senha);
+    }
 
-        // Configurar o listener do CheckBox mostrar senha
-        mostrarSenha.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            if (isChecked) {
-                // Muda o tipo de entrada para texto visível em ambos os campos
-                campoSenha.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
-                campoRepetirSenha.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
-            } else {
-                // Muda o tipo de entrada para texto oculto em ambos os campos
-                campoSenha.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
-                campoRepetirSenha.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
-            }
-            
-            // Mantém a fonte Inter após mudar o tipo de input
-            android.graphics.Typeface interFont = ResourcesCompat.getFont(MainRegistrar.this, R.font.fonte_inter);
-            campoSenha.setTypeface(interFont);
-            campoRepetirSenha.setTypeface(interFont);
-            
-            // Move o cursor para o final do texto em ambos os campos
-            campoSenha.setSelection(campoSenha.getText().length());
-            campoRepetirSenha.setSelection(campoRepetirSenha.getText().length());
+    /**
+     * Configura os campos de entrada com suas respectivas validações e comportamentos.
+     */
+    private void configurarCampos() {
+        configurarMostrarSenha();
+        configurarValidacaoNome(botaoCriar);
+        configurarValidacaoEmail();
+        configurarValidacaoSenha();
+        configurarEfeitosFocus();
+    }
+
+    /**
+     * Configura os botões da interface com seus respectivos comportamentos.
+     */
+    private void configurarBotoes() {
+        configurarEfeitoBotao(botaoCriar);
+        botaoCriar.setOnClickListener(v -> tentarRegistrar());
+    }
+
+    /**
+     * Configura o checkbox para mostrar/ocultar a senha e repetir senha.
+     */
+    private void configurarMostrarSenha() {
+        TextView textoMostrarSenha = findViewById(R.id.texto_mostrar_senha);
+        
+        // Configurar clique no texto
+        textoMostrarSenha.setOnClickListener(v -> {
+            mostrarSenha.setChecked(!mostrarSenha.isChecked());
         });
 
-        // Inicialização dos MaterialButtons
+        mostrarSenha.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            atualizarVisibilidadeSenha(isChecked);
+            atualizarFonteSenha();
+            iconeCheck.setVisibility(isChecked ? View.VISIBLE : View.GONE);
+        });
+    }
+
+    /**
+     * Configura os efeitos visuais de foco para todos os campos de entrada.
+     */
+    private void configurarEfeitosFocus() {
         MaterialButton corpoNomeCompleto = findViewById(R.id.corpo_nome_completo);
         MaterialButton corpoEmail = findViewById(R.id.corpo_email);
         MaterialButton corpoSenha = findViewById(R.id.corpo_senha);
         MaterialButton corpoRepetirSenha = findViewById(R.id.corpo_repetir_senha);
 
-        configurarEfeitoBotao(botaoCriar);
+        int corAzul = Color.parseColor(COR_AZUL);
+        int corCinza = Color.parseColor(COR_CINZA);
 
-        configurarValidacaoNome(botaoCriar);
-
-        configurarValidacaoEmail();
-
-        configurarValidacaoSenha();
-
-        // Cor azul e cinza dos ícones
-        int corAzul = Color.parseColor("#2196F3");
-        int corCinza = Color.parseColor("#FFFFFF");
-
-        // Listener para o campo de nome completo
-        campoNomeCompleto.setOnFocusChangeListener((v, hasFocus) -> {
-            int color = hasFocus ? R.color.azul : R.color.branco;
-            corpoNomeCompleto.setStrokeColor(ColorStateList.valueOf(ContextCompat.getColor(MainRegistrar.this, color)));
-            if (hasFocus) {
-                iconeNome.setColorFilter(corAzul);
-            } else {
-                iconeNome.setColorFilter(corCinza);
-            }
-        });
-
-        // Listener para o campo de email
-        campoEmail.setOnFocusChangeListener((v, hasFocus) -> {
-            int color = hasFocus ? R.color.azul : R.color.branco;
-            corpoEmail.setStrokeColor(ColorStateList.valueOf(ContextCompat.getColor(MainRegistrar.this, color)));
-            if (hasFocus) {
-                iconeEmail.setColorFilter(corAzul);
-            } else {
-                iconeEmail.setColorFilter(corCinza);
-            }
-        });
-
-        // Listener para o campo de senha
-        campoSenha.setOnFocusChangeListener((v, hasFocus) -> {
-            int color = hasFocus ? R.color.azul : R.color.branco;
-            corpoSenha.setStrokeColor(ColorStateList.valueOf(ContextCompat.getColor(MainRegistrar.this, color)));
-            if (hasFocus) {
-                iconeSenha.setColorFilter(corAzul);
-            } else {
-                iconeSenha.setColorFilter(corCinza);
-            }
-        });
-
-        // Listener para o campo de repetir senha
-        campoRepetirSenha.setOnFocusChangeListener((v, hasFocus) -> {
-            int color = hasFocus ? R.color.azul : R.color.branco;
-            corpoRepetirSenha.setStrokeColor(ColorStateList.valueOf(ContextCompat.getColor(MainRegistrar.this, color)));
-            if (hasFocus) {
-                iconeRepetirSenha.setColorFilter(corAzul);
-            } else {
-                iconeRepetirSenha.setColorFilter(corCinza);
-            }
-        });
-
-        // Configurar click do botão criar
-        botaoCriar.setOnClickListener(v -> tentarRegistrar());
+        configurarEfeitoFocusCampo(campoNomeCompleto, corpoNomeCompleto, iconeNome, corAzul, corCinza);
+        configurarEfeitoFocusCampo(campoEmail, corpoEmail, iconeEmail, corAzul, corCinza);
+        configurarEfeitoFocusCampo(campoSenha, corpoSenha, iconeSenha, corAzul, corCinza);
+        configurarEfeitoFocusCampo(campoRepetirSenha, corpoRepetirSenha, iconeRepetirSenha, corAzul, corCinza);
     }
 
+    /**
+     * Configura o efeito visual de foco para um campo específico.
+     * @param campo Campo de texto a ser configurado
+     * @param corpo Botão material que envolve o campo
+     * @param icone Ícone associado ao campo
+     * @param corFoco Cor quando o campo está em foco
+     * @param corNormal Cor quando o campo está sem foco
+     */
+    private void configurarEfeitoFocusCampo(EditText campo, MaterialButton corpo, ImageView icone, int corFoco, int corNormal) {
+        campo.setOnFocusChangeListener((v, hasFocus) -> {
+            int color = hasFocus ? R.color.azul : R.color.branco;
+            corpo.setStrokeColor(ColorStateList.valueOf(ContextCompat.getColor(MainRegistrar.this, color)));
+            icone.setColorFilter(hasFocus ? corFoco : corNormal);
+        });
+    }
+
+    /**
+     * Configura o efeito visual de toque para um botão.
+     * @param botao Botão a ser configurado
+     */
     private void configurarEfeitoBotao(MaterialButton botao) {
         botao.setOnTouchListener((v, event) -> {
             if (event.getAction() == MotionEvent.ACTION_DOWN) {
@@ -180,9 +204,11 @@ public class MainRegistrar extends AppCompatActivity {
         });
     }
 
-    // Método para configurar e validar nome completo
+    /**
+     * Configura a validação do campo nome completo em tempo real.
+     * Verifica se contém nome e sobrenome e remove caracteres especiais.
+     */
     private void configurarValidacaoNome(MaterialButton botaoCriar) {
-        // Validação em tempo real
         campoNomeCompleto.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
@@ -200,7 +226,6 @@ public class MainRegistrar extends AppCompatActivity {
                     campoNomeCompleto.setSelection(textoLimpo.length());
                 }
 
-                // Validar em tempo real
                 if (!textoLimpo.isEmpty()) {
                     String[] partes = textoLimpo.split("\\s+");
                     if (partes.length < 2) {
@@ -211,21 +236,13 @@ public class MainRegistrar extends AppCompatActivity {
                 }
             }
         });
-
-        // Configurar validação no botão criar
-        botaoCriar.setOnClickListener(v -> {
-            if (!validarTodosCampos()) {
-                return;
-            }
-            
-            // Se chegou aqui, todos os campos são válidos
-            // Aqui você pode adicionar a próxima validação ou ação
-        });
     }
 
-    // Método para configurar e validar email
+    /**
+     * Configura a validação do campo email em tempo real.
+     * Remove espaços e verifica se o formato do email é válido.
+     */
     private void configurarValidacaoEmail() {
-        // Validação em tempo real
         campoEmail.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
@@ -236,14 +253,12 @@ public class MainRegistrar extends AppCompatActivity {
             @Override
             public void afterTextChanged(Editable s) {
                 String email = s.toString();
-                // Remove espaços em branco
                 if (email.contains(" ")) {
                     String emailSemEspaco = email.replace(" ", "");
                     s.replace(0, s.length(), emailSemEspaco);
                     campoEmail.setSelection(emailSemEspaco.length());
                 }
 
-                // Validar formato do email em tempo real
                 if (!email.isEmpty()) {
                     if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
                         campoEmail.setError("E-mail inválido");
@@ -255,40 +270,11 @@ public class MainRegistrar extends AppCompatActivity {
         });
     }
 
-    // Metodo para validar todos os campos
-    private boolean validarTodosCampos() {
-        boolean nomeValido = validarNomeCompleto();
-        boolean emailValido = validarEmail();
-        boolean senhaValida = validarForcaSenha(campoSenha.getText().toString());
-        boolean confirmacaoValida = validarConfirmacaoSenha();
-
-        if (nomeValido && emailValido && senhaValida && confirmacaoValida) {
-            return true;
-        }
-        return false;
-    }
-
-    // Método para validar nome completo
-    private boolean validarNomeCompleto() {
-        String nome = campoNomeCompleto.getText().toString().trim();
-        
-        if (nome.isEmpty()) {
-            campoNomeCompleto.setError("Nome completo é obrigatório");
-            return false;
-        }
-        
-        String[] partes = nome.split("\\s+");
-        if (partes.length < 2) {
-            campoNomeCompleto.setError("Digite seu nome e sobrenome");
-            return false;
-        }
-        
-        return true;
-    }
-
-    // Método para configurar e validar senha
+    /**
+     * Configura a validação dos campos de senha e repetir senha em tempo real.
+     * Verifica força da senha e se as senhas coincidem.
+     */
     private void configurarValidacaoSenha() {
-        // Validação em tempo real da força da senha
         campoSenha.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
@@ -305,7 +291,6 @@ public class MainRegistrar extends AppCompatActivity {
             }
         });
 
-        // Validação em tempo real se as senhas coincidem
         campoRepetirSenha.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
@@ -324,7 +309,42 @@ public class MainRegistrar extends AppCompatActivity {
         });
     }
 
-    // Método auxiliar para validar email
+    /**
+     * Valida todos os campos do formulário antes do registro.
+     * @return true se todos os campos são válidos, false caso contrário
+     */
+    private boolean validarTodosCampos() {
+        return validarNomeCompleto() && 
+               validarEmail() && 
+               validarForcaSenha(campoSenha.getText().toString()) && 
+               validarConfirmacaoSenha();
+    }
+
+    /**
+     * Valida o campo nome completo.
+     * @return true se o nome é válido, false caso contrário
+     */
+    private boolean validarNomeCompleto() {
+        String nome = campoNomeCompleto.getText().toString().trim();
+        
+        if (nome.isEmpty()) {
+            campoNomeCompleto.setError("Nome completo é obrigatório");
+            return false;
+        }
+        
+        String[] partes = nome.split("\\s+");
+        if (partes.length < 2) {
+            campoNomeCompleto.setError("Digite seu nome e sobrenome");
+            return false;
+        }
+        
+        return true;
+    }
+
+    /**
+     * Valida o campo email.
+     * @return true se o email é válido, false caso contrário
+     */
     private boolean validarEmail() {
         String email = campoEmail.getText().toString().trim();
         
@@ -341,7 +361,12 @@ public class MainRegistrar extends AppCompatActivity {
         return true;
     }
 
-    // Método para validar força da senha
+    /**
+     * Valida a força da senha.
+     * Verifica comprimento mínimo e presença de números, letras e caracteres especiais.
+     * @param senha Senha a ser validada
+     * @return true se a senha é forte o suficiente, false caso contrário
+     */
     private boolean validarForcaSenha(String senha) {
         if (senha.length() < 6) {
             campoSenha.setError("A senha deve ter pelo menos 6 caracteres");
@@ -361,7 +386,10 @@ public class MainRegistrar extends AppCompatActivity {
         return true;
     }
 
-    // Método para validar se as senhas coincidem
+    /**
+     * Valida se a senha de confirmação coincide com a senha original.
+     * @return true se as senhas coincidem, false caso contrário
+     */
     private boolean validarConfirmacaoSenha() {
         String senha = campoSenha.getText().toString();
         String confirmacao = campoRepetirSenha.getText().toString();
@@ -379,12 +407,15 @@ public class MainRegistrar extends AppCompatActivity {
         return true;
     }
 
+    /**
+     * Tenta registrar um novo usuário no Firebase.
+     * Realiza todas as validações necessárias antes do registro.
+     */
     private void tentarRegistrar() {
         if (!validarTodosCampos()) {
             return;
         }
 
-        // Mostrar loading e desabilitar botão
         loadingRegistrar.setVisibility(View.VISIBLE);
         botaoCriar.setEnabled(false);
 
@@ -395,12 +426,10 @@ public class MainRegistrar extends AppCompatActivity {
         mAuth.createUserWithEmailAndPassword(email, senha)
                 .addOnCompleteListener(this, task -> {
                     if (task.isSuccessful()) {
-                        // Registro bem sucedido
                         FirebaseUser user = mAuth.getCurrentUser();
                         if (user != null) {
                             atualizarPerfilUsuario(user, nome);
                         } else {
-                            // Caso improvável, mas precisamos tratar
                             loadingRegistrar.setVisibility(View.GONE);
                             botaoCriar.setEnabled(true);
                             Toast.makeText(MainRegistrar.this, 
@@ -408,11 +437,9 @@ public class MainRegistrar extends AppCompatActivity {
                                 Toast.LENGTH_LONG).show();
                         }
                     } else {
-                        // Esconder loading e reabilitar botão
                         loadingRegistrar.setVisibility(View.GONE);
                         botaoCriar.setEnabled(true);
 
-                        // Tratar erros específicos
                         try {
                             throw task.getException();
                         } catch (FirebaseAuthWeakPasswordException e) {
@@ -433,6 +460,11 @@ public class MainRegistrar extends AppCompatActivity {
                 });
     }
 
+    /**
+     * Atualiza o perfil do usuário após o registro bem-sucedido.
+     * @param user Usuário do Firebase recém-criado
+     * @param nome Nome completo do usuário para atualizar o perfil
+     */
     private void atualizarPerfilUsuario(FirebaseUser user, String nome) {
         UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
                 .setDisplayName(nome)
@@ -440,7 +472,6 @@ public class MainRegistrar extends AppCompatActivity {
 
         user.updateProfile(profileUpdates)
                 .addOnCompleteListener(task -> {
-                    // Esconder loading e reabilitar botão
                     loadingRegistrar.setVisibility(View.GONE);
                     botaoCriar.setEnabled(true);
 
@@ -449,7 +480,6 @@ public class MainRegistrar extends AppCompatActivity {
                             "Registro realizado com sucesso!", 
                             Toast.LENGTH_SHORT).show();
                         
-                        // Redirecionar para MainPainel
                         Intent intent = new Intent(MainRegistrar.this, MainPainel.class);
                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         startActivity(intent);
@@ -462,13 +492,39 @@ public class MainRegistrar extends AppCompatActivity {
                 });
     }
 
-    // Função para mudar a cor da barra de status
+    /**
+     * Altera a cor da barra de status do sistema.
+     */
     private void changeStatusBarColor() {
-        getWindow().setStatusBarColor(Color.parseColor("#2C3E50"));
+        getWindow().setStatusBarColor(Color.parseColor(COR_BARRA_SISTEMA));
     }
 
-    // Função para mudar a cor da barra de navegação
+    /**
+     * Altera a cor da barra de navegação do sistema.
+     */
     private void changeNavigationBarColor() {
-        getWindow().setNavigationBarColor(Color.parseColor("#2C3E50"));
+        getWindow().setNavigationBarColor(Color.parseColor(COR_BARRA_SISTEMA));
+    }
+
+    private void atualizarVisibilidadeSenha(boolean mostrar) {
+        int inputType = mostrar ? 
+            InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD :
+            InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD;
+
+        campoSenha.setInputType(inputType);
+        campoRepetirSenha.setInputType(inputType);
+        
+        android.graphics.Typeface interFont = ResourcesCompat.getFont(MainRegistrar.this, R.font.fonte_inter);
+        campoSenha.setTypeface(interFont);
+        campoRepetirSenha.setTypeface(interFont);
+        
+        campoSenha.setSelection(campoSenha.getText().length());
+        campoRepetirSenha.setSelection(campoRepetirSenha.getText().length());
+    }
+
+    private void atualizarFonteSenha() {
+        android.graphics.Typeface interFont = ResourcesCompat.getFont(MainRegistrar.this, R.font.fonte_inter);
+        campoSenha.setTypeface(interFont);
+        campoRepetirSenha.setTypeface(interFont);
     }
 }

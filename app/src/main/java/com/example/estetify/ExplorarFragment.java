@@ -18,15 +18,9 @@ public class ExplorarFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_explorar, container, false);
         
         loadingExplorar = view.findViewById(R.id.loading_explorar);
-        
-        // Mostrar loading
-        loadingExplorar.setVisibility(View.VISIBLE);
-        
-        // Simular carregamento
-        new Handler(Looper.getMainLooper()).postDelayed(() -> {
-            loadingExplorar.setVisibility(View.GONE);
-        }, 1000);
 
-        return view;
+        loadingExplorar.setVisibility(View.VISIBLE);
+
+                loadingExplorar.setVisibility(View.GONE);
     }
 }

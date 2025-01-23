@@ -211,15 +211,47 @@
             android:gravity="center"
             android:orientation="vertical">
 
-            <CheckBox
-                android:id="@+id/mostrar_senha"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/mostrar_senha"
-                android:fontFamily="@font/fonte_inter"
-                android:textColor="@color/branco"
-                android:buttonTint="@color/branco"
-                android:layout_marginTop="-15dp"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="32dp"
+                android:paddingBottom="10dp"
+                android:orientation="horizontal"
+                android:gravity="center" >
+
+                <FrameLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <CheckBox
+                        android:id="@+id/mostrar_senha"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/branco"
+                        android:animateLayoutChanges="false"
+                        android:background="@android:color/transparent"
+                        android:buttonTint="@color/branco" />
+
+                    <ImageView
+                        android:id="@+id/icone_check_senha"
+                        android:layout_width="match_parent"
+                        android:layout_height="32dp"
+                        android:src="@drawable/icone_check"
+                        android:layout_gravity="center"
+                        android:visibility="gone" />
+
+                </FrameLayout>
+
+                <TextView
+                    android:id="@+id/texto_mostrar_senha"
+                    android:layout_width="96dp"
+                    android:layout_height="24dp"
+                    android:textColor="@color/branco"
+                    android:fontFamily="@font/fonte_inter"
+                    android:text="@string/mostrar_senha"
+                    android:layout_gravity="center"
+                    android:gravity="center" />
+
+            </LinearLayout>
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/botao_conectar"

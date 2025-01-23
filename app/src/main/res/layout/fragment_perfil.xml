@@ -32,8 +32,8 @@
                         android:layout_width="32dp"
                         android:layout_height="32dp"
                         android:padding="4dp"
-                        android:background="@drawable/background_circle_white"
-                        android:src="@drawable/ic_edit"
+                        android:background="@drawable/fundo_circular_branco"
+                        android:src="@drawable/icone_editar"
                         android:layout_marginEnd="8dp"
                         android:layout_marginBottom="8dp"
                         android:elevation="2dp"
@@ -67,7 +67,7 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:padding="16dp"
-                    android:background="@drawable/background_rounded_white"
+                    android:background="@drawable/fundo_bordas_branco"
                     android:layout_marginBottom="24dp">
 
                     <!-- Nome -->
@@ -106,7 +106,7 @@
                             android:id="@+id/botao_editar_nome"
                             android:layout_width="24dp"
                             android:layout_height="24dp"
-                            android:src="@drawable/ic_edit"
+                            android:src="@drawable/icone_editar"
                             android:background="?attr/selectableItemBackgroundBorderless"
                             android:tint="@color/azul_escuro"/>
                     </LinearLayout>
@@ -180,7 +180,7 @@
                             android:id="@+id/botao_editar_cpf"
                             android:layout_width="24dp"
                             android:layout_height="24dp"
-                            android:src="@drawable/ic_edit"
+                            android:src="@drawable/icone_editar"
                             android:background="?attr/selectableItemBackgroundBorderless"
                             android:tint="@color/azul_escuro"/>
                     </LinearLayout>
@@ -221,7 +221,7 @@
                             android:id="@+id/botao_editar_genero"
                             android:layout_width="24dp"
                             android:layout_height="24dp"
-                            android:src="@drawable/ic_edit"
+                            android:src="@drawable/icone_editar"
                             android:background="?attr/selectableItemBackgroundBorderless"
                             android:tint="@color/azul_escuro"/>
                     </LinearLayout>
@@ -262,7 +262,7 @@
                             android:id="@+id/botao_editar_endereco"
                             android:layout_width="24dp"
                             android:layout_height="24dp"
-                            android:src="@drawable/ic_edit"
+                            android:src="@drawable/icone_editar"
                             android:background="?attr/selectableItemBackgroundBorderless"
                             android:tint="@color/azul_escuro"/>
                     </LinearLayout>
@@ -278,7 +278,7 @@
                     android:textSize="16sp"
                     android:textColor="@color/preto"
                     android:fontFamily="@font/fonte_inter"
-                    app:icon="@drawable/ic_lock"
+                    app:icon="@drawable/icone_cadeado"
                     app:iconTint="@color/preto"
                     app:backgroundTint="@color/branco"
                     app:strokeColor="@color/branco"
@@ -296,7 +296,7 @@
                     android:textSize="16sp"
                     android:textColor="@color/preto"
                     android:fontFamily="@font/fonte_inter"
-                    app:icon="@drawable/ic_history"
+                    app:icon="@drawable/icone_historico"
                     app:iconTint="@color/preto"
                     app:backgroundTint="@color/branco"
                     app:strokeColor="@color/branco"
@@ -307,14 +307,20 @@
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/botao_excluir_conta"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Excluir conta"
+                    android:layout_width="320dp"
+                    android:layout_height="64dp"
+                    android:text="Excluir Conta"
+                    android:textAllCaps="false"
                     android:textColor="@color/branco"
-                    android:backgroundTint="@color/vermelho"
-                    android:layout_marginTop="16dp"
-                    app:cornerRadius="8dp" />
-
+                    android:textSize="16sp"
+                    android:fontFamily="@font/fonte_inter"
+                    android:layout_marginTop="8px"
+                    android:layout_marginBottom="8px"
+                    app:cornerRadius="10dp"
+                    app:backgroundTint="@color/vermelho"
+                    app:icon="@drawable/icone_excluir"
+                    app:iconTint="@color/branco"
+                    app:iconPadding="8dp"/>
             </LinearLayout>
         </ScrollView>
 

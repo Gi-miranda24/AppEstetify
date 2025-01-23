@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="8dp"
+    app:cardCornerRadius="10dp"
+    app:cardBackgroundColor="@color/azul_escuro"
+    app:cardElevation="2dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="12dp">
+
+        <ImageView
+            android:id="@+id/item_image"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:scaleType="centerCrop"
+            android:layout_marginEnd="12dp"/>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/item_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:fontFamily="@font/fonte_inter"/>
+
+            <TextView
+                android:id="@+id/store_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="14sp"
+                android:fontFamily="@font/fonte_inter"
+                android:layout_marginTop="4dp"/>
+
+            <TextView
+                android:id="@+id/item_price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                android:textColor="@color/azul"
+                android:textStyle="bold"
+                android:fontFamily="@font/fonte_inter"
+                android:layout_marginTop="8dp"/>
+
+        </LinearLayout>
+
+        <ImageButton
+            android:id="@+id/btn_remove"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/icone_remover"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:tint="@color/vermelho"/>
+
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>

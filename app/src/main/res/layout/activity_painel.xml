@@ -33,7 +33,7 @@
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
         android:background="?attr/selectableItemBackgroundBorderless"
-        android:src="@drawable/ic_logout"
+        android:src="@drawable/icone_desconectar"
         android:contentDescription="Sair"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />

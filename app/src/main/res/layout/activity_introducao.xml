@@ -61,7 +61,7 @@
         android:layout_width="384dp"
         android:layout_height="480dp"
         android:orientation="vertical"
-        android:background="@drawable/fundo_bordas"
+        android:background="@drawable/fundo_bordas_azul_escuro"
         android:gravity="center"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -90,17 +90,18 @@
             android:scaleType="fitCenter"
             android:alpha="0" />
 
-        <ImageView
-            android:id="@+id/apresentacao_image_dois"
-            android:layout_width="192dp"
-            android:layout_height="192dp"
-            android:src="@drawable/introducao_um"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:scaleType="fitCenter"
-            android:alpha="0" />
+            <ImageView
+                android:id="@+id/apresentacao_image_dois"
+                android:layout_width="192dp"
+                android:layout_height="192dp"
+                android:alpha="0"
+                android:scaleType="fitCenter"
+                android:src="@drawable/introducao_dois"
+                android:visibility="invisible"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

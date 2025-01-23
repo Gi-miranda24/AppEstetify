@@ -2,21 +2,141 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/azul_escuro">
 
-    <FrameLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-        <ProgressBar
-            android:id="@+id/loading_carrinho"
-            android:layout_width="wrap_content"
+        <!-- Cabeçalho -->
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:visibility="gone"
-            android:indeterminateTintMode="src_atop"
-            android:indeterminateTint="@color/azul"/>
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:padding="20dp">
 
-    </FrameLayout>
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/icone_carrinho"
+                android:tint="@color/branco"
+                android:layout_marginEnd="8dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Carrinho"
+                android:textColor="@color/branco"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                android:fontFamily="@font/fonte_inter"/>
+        </LinearLayout>
+
+        <!-- Visualização Geral -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp"
+            android:layout_margin="16dp"
+            android:background="@drawable/fundo_bordas_branco">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Resumo do Pedido"
+                android:textColor="@color/preto"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:fontFamily="@font/fonte_inter"
+                android:layout_marginBottom="16dp"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginBottom="8dp">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Total de Itens:"
+                    android:textColor="@color/preto"
+                    android:fontFamily="@font/fonte_inter"/>
+
+                <TextView
+                    android:id="@+id/total_itens"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/preto"
+                    android:fontFamily="@font/fonte_inter"
+                    android:text="0"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginBottom="16dp">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Valor Total:"
+                    android:textColor="@color/preto"
+                    android:textStyle="bold"
+                    android:fontFamily="@font/fonte_inter"/>
+
+                <TextView
+                    android:id="@+id/valor_total"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/preto"
+                    android:textStyle="bold"
+                    android:fontFamily="@font/fonte_inter"
+                    android:text="R$ 0,00"/>
+            </LinearLayout>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_finalizar"
+                android:layout_width="match_parent"
+                android:layout_height="64dp"
+                android:text="Finalizar Compra"
+                android:textAllCaps="false"
+                android:textSize="16sp"
+                android:textColor="@color/branco"
+                android:fontFamily="@font/fonte_inter"
+                app:backgroundTint="@color/azul"
+                app:cornerRadius="10dp"/>
+        </LinearLayout>
+
+        <!-- Lista de Itens -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:padding="16dp"
+            android:clipToPadding="false"/>
+
+    </LinearLayout>
+
+    <ProgressBar
+        android:id="@+id/loading_carrinho"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:visibility="gone"
+        android:indeterminateTintMode="src_atop"
+        android:indeterminateTint="@color/azul"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
