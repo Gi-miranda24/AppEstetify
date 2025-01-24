@@ -126,9 +126,11 @@ public class PerfilFragment extends Fragment {
     private void configurarBotoes() {
         botaoAlterarSenha.setOnClickListener(v -> mostrarDialogoAlterarSenha());
         botaoHistorico.setOnClickListener(v -> {
-            Toast.makeText(requireContext(),
-                "Histórico em desenvolvimento",
-                Toast.LENGTH_SHORT).show();
+            HistoricoFragment historicoFragment = new HistoricoFragment();
+            getParentFragmentManager().beginTransaction()
+                .replace(R.id.fragment_container, historicoFragment)
+                .addToBackStack(null)
+                .commit();
         });
     }
 

@@ -259,4 +259,14 @@ public class MainPainel extends AppCompatActivity {
         finish();
     }
     //endregion
+
+    //region Getters
+    /**
+     * Retorna a referência para a BottomNavigationView.
+     * @return BottomNavigationView da activity
+     */
+    public BottomNavigationView getBottomNavigationView() {
+        return navegacaoInferior;
+    }
+    //endregion
 }

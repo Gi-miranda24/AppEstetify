@@ -31,6 +31,12 @@ import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.SetOptions;
+
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 public class MainRegistrar extends AppCompatActivity {
 
@@ -470,21 +476,51 @@ public class MainRegistrar extends AppCompatActivity {
                 .setDisplayName(nome)
                 .build();
 
+        // Primeiro atualiza o perfil no Authentication
         user.updateProfile(profileUpdates)
                 .addOnCompleteListener(task -> {
-                    loadingRegistrar.setVisibility(View.GONE);
-                    botaoCriar.setEnabled(true);
-
                     if (task.isSuccessful()) {
-                        Toast.makeText(MainRegistrar.this, 
-                            "Registro realizado com sucesso!", 
-                            Toast.LENGTH_SHORT).show();
+                        // Depois cria o documento do usuário no Firestore
+                        FirebaseFirestore db = FirebaseFirestore.getInstance();
                         
-                        Intent intent = new Intent(MainRegistrar.this, MainPainel.class);
-                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                        startActivity(intent);
-                        finish();
+                        // Cria um objeto com os dados do usuário
+                        Map<String, Object> userData = new HashMap<>();
+                        userData.put("nome", nome);
+                        userData.put("email", user.getEmail());
+                        userData.put("fotoUrl", "");
+                        userData.put("cpf", "");
+                        userData.put("endereco", "");
+                        userData.put("genero", "");
+                        userData.put("dataCriacao", new Date());
+
+                        // Salva no Firestore usando o UID como ID do documento
+                        db.collection("usuarios")
+                            .document(user.getUid())
+                            .set(userData)
+                            .addOnCompleteListener(firestoreTask -> {
+                                loadingRegistrar.setVisibility(View.GONE);
+                                botaoCriar.setEnabled(true);
+
+                                if (firestoreTask.isSuccessful()) {
+                                    Toast.makeText(MainRegistrar.this, 
+                                        "Registro realizado com sucesso!", 
+                                        Toast.LENGTH_SHORT).show();
+                                    
+                                    Intent intent = new Intent(MainRegistrar.this, MainPainel.class);
+                                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                    startActivity(intent);
+                                    finish();
+                                } else {
+                                    // Se falhar ao criar no Firestore, faz logout
+                                    mAuth.signOut();
+                                    Toast.makeText(MainRegistrar.this,
+                                        "Erro ao criar perfil. Tente novamente.", 
+                                        Toast.LENGTH_SHORT).show();
+                                }
+                            });
                     } else {
+                        loadingRegistrar.setVisibility(View.GONE);
+                        botaoCriar.setEnabled(true);
                         Toast.makeText(MainRegistrar.this,
                             "Erro ao atualizar perfil", 
                             Toast.LENGTH_SHORT).show();

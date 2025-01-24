@@ -1,5 +1,6 @@
 package com.example.estetify;
 
+// Imports do Android
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -11,27 +12,49 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
+
+// Imports do AndroidX
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+// Imports do Material Design
 import com.google.android.material.button.MaterialButton;
+
+// Imports do Firebase
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
+
+// Imports do Java
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Fragment responsável pela tela de exploração do app.
+ * Permite buscar e visualizar serviços, produtos e lojas.
+ */
 public class ExplorarFragment extends Fragment {
+    //region Campos
+    // Views
     private ProgressBar loadingExplorar;
     private EditText searchField;
     private MaterialButton btnServices;
     private MaterialButton btnProducts;
     private MaterialButton btnStores;
     private RecyclerView recyclerView;
+    
+    // Firebase
     private FirebaseFirestore db;
+    
+    // Estado
     private String currentFilter = "servicos"; // Pode ser: servicos, produtos, lojas
+    
+    // Adapters
     private ItemAdapter itemAdapter;
     private LojaAdapter lojaAdapter;
+    //endregion
 
+    //region Ciclo de Vida
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,12 +91,17 @@ public class ExplorarFragment extends Fragment {
         // Atualizar estado dos botões
         atualizarBotoesSelecao();
         
-        // Carregar dados iniciais (serviços)
+        // Carregar dados iniciais
         carregarDados();
 
         return view;
     }
+    //endregion
 
+    //region Inicialização
+    /**
+     * Inicializa as referências das views utilizadas no fragment
+     */
     private void inicializarViews(View view) {
         loadingExplorar = view.findViewById(R.id.loading_explorar);
         searchField = view.findViewById(R.id.search_field);
@@ -83,6 +111,9 @@ public class ExplorarFragment extends Fragment {
         recyclerView = view.findViewById(R.id.recycler_view);
     }
 
+    /**
+     * Configura os listeners de eventos dos componentes
+     */
     private void configurarListeners() {
         // Configurar botões de filtro
         btnServices.setOnClickListener(v -> {
@@ -103,22 +134,33 @@ public class ExplorarFragment extends Fragment {
             carregarDados();
         });
 
-        // Configurar busca
+        // Configurar busca com debounce
         searchField.addTextChangedListener(new TextWatcher() {
+            private Handler handler = new Handler(Looper.getMainLooper());
+            private Runnable searchRunnable;
+
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                // Realizar busca após o usuário digitar
-                carregarDados();
+                if (searchRunnable != null) {
+                    handler.removeCallbacks(searchRunnable);
+                }
+                searchRunnable = () -> carregarDados();
+                handler.postDelayed(searchRunnable, 500); // Delay de 500ms
             }
 
             @Override
             public void afterTextChanged(Editable s) {}
         });
     }
+    //endregion
 
+    //region UI
+    /**
+     * Atualiza o estado visual dos botões de filtro
+     */
     private void atualizarBotoesSelecao() {
         btnServices.setBackgroundTintList(getContext().getColorStateList(
             currentFilter.equals("servicos") ? R.color.azul : R.color.azul_escuro));
@@ -127,7 +169,12 @@ public class ExplorarFragment extends Fragment {
         btnStores.setBackgroundTintList(getContext().getColorStateList(
             currentFilter.equals("lojas") ? R.color.azul : R.color.azul_escuro));
     }
+    //endregion
 
+    //region Carregar Dados
+    /**
+     * Carrega os dados baseado no filtro atual e texto de busca
+     */
     private void carregarDados() {
         loadingExplorar.setVisibility(View.VISIBLE);
         String searchText = searchField.getText().toString().toLowerCase();
@@ -139,6 +186,10 @@ public class ExplorarFragment extends Fragment {
         }
     }
 
+    /**
+     * Carrega a lista de lojas do Firestore
+     * @param searchText texto para filtrar as lojas
+     */
     private void carregarLojas(String searchText) {
         db.collection("lojas")
             .get()
@@ -170,6 +221,10 @@ public class ExplorarFragment extends Fragment {
             });
     }
 
+    /**
+     * Carrega a lista de itens (produtos ou serviços) do Firestore
+     * @param searchText texto para filtrar os itens
+     */
     private void carregarItens(String searchText) {
         db.collection("itens")
             .whereEqualTo("tipo", currentFilter.equals("servicos") ? "Serviço" : "Produto")
@@ -202,4 +257,5 @@ public class ExplorarFragment extends Fragment {
                 loadingExplorar.setVisibility(View.GONE);
             });
     }
+    //endregion
 }

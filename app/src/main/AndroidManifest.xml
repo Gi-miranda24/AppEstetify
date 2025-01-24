@@ -32,10 +32,6 @@
             android:exported="true"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".MainIntroducao"
-            android:exported="false"
-            android:screenOrientation="portrait" />
-        <activity
             android:name=".MainApresentacao"
             android:exported="true"
             android:screenOrientation="portrait">

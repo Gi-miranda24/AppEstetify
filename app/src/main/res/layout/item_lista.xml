@@ -30,7 +30,7 @@
                 android:id="@+id/item_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/preto"
+                android:textColor="@color/cinza_claro"
                 android:textSize="16sp"
                 android:textStyle="bold"
                 android:fontFamily="@font/fonte_inter"/>
@@ -52,7 +52,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 android:textColor="@color/azul"
-                android:textStyle="bold"/>
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:fontFamily="@font/fonte_inter"/>
 
         </LinearLayout>
 

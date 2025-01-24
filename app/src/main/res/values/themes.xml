@@ -6,24 +6,24 @@
         <item name="colorPrimary">@color/azul_escuro</item>
         <item name="colorPrimaryContainer">@color/azul_marinho</item>
         <item name="colorOnPrimary">@color/branco</item>
-        
+
         <!-- Cores secundárias -->
         <item name="colorSecondary">@color/azul_claro</item>
         <item name="colorSecondaryContainer">@color/azul</item>
         <item name="colorOnSecondary">@color/branco</item>
-        
+
         <!-- Cores de superfície -->
         <item name="android:colorBackground">@color/branco</item>
         <item name="colorSurface">@color/cinza_claro</item>
         <item name="colorOnSurface">@color/azul_escuro</item>
-        
+
         <!-- Cores para diálogos -->
         <item name="materialAlertDialogTheme">@style/ThemeOverlay.App.MaterialAlertDialog</item>
-        
+
         <!-- Barras do sistema -->
         <item name="android:statusBarColor">@color/azul_escuro</item>
         <item name="android:navigationBarColor">@color/azul_escuro</item>
-        
+
         <!-- Ripple e estados -->
         <item name="colorPrimaryInverse">@color/azul_claro</item>
         <item name="colorSurfaceVariant">@color/cinza_claro</item>

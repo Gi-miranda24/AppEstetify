@@ -1,2 +1,2 @@
 # Estetify
- Código compartilhado por Samuel
+ Código por Samuel

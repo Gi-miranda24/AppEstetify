@@ -21,6 +21,7 @@
         android:layout_marginTop="16dp"
         android:textSize="24sp"
         android:textStyle="bold"
+        android:textColor="@color/cinza_claro"
         app:layout_constraintTop_toBottomOf="@id/store_image"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
@@ -38,19 +39,25 @@
 
     <TextView
         android:id="@+id/store_bio"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:textAlignment="center"
-        app:layout_constraintTop_toBottomOf="@id/store_rating"/>
+        android:textColor="@color/cinza_claro"
+        app:layout_constraintTop_toBottomOf="@id/store_rating"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
 
     <TextView
         android:id="@+id/store_address"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:textAlignment="center"
-        app:layout_constraintTop_toBottomOf="@id/store_bio"/>
+        android:textColor="@color/cinza_claro"
+        app:layout_constraintTop_toBottomOf="@id/store_bio"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
 
     <LinearLayout
         android:id="@+id/filter_buttons"

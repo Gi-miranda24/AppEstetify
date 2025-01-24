@@ -136,7 +136,7 @@ public class MainApresentacao extends AppCompatActivity {
 
     /**
      * Verifica se existe um usuário logado e redireciona adequadamente.
-     * Se houver usuário logado, vai para MainPainel, caso contrário para MainIntroducao.
+     * Se houver usuário logado, vai para MainPainel, caso contrário para MainInicio.
      */
     private void verificarUsuarioLogado() {
         FirebaseUser currentUser = mAuth.getCurrentUser();
@@ -145,7 +145,7 @@ public class MainApresentacao extends AppCompatActivity {
         if (currentUser != null) {
             intent = new Intent(this, MainPainel.class);
         } else {
-            intent = new Intent(this, MainIntroducao.class);
+            intent = new Intent(this, MainInicio.class);
         }
 
         startActivity(intent);

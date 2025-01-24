@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 // Imports AndroidX
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.core.graphics.Insets;
@@ -25,6 +26,7 @@ import androidx.core.view.WindowInsetsCompat;
 
 // Imports Google e Firebase
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseAuthInvalidUserException;
@@ -185,8 +187,77 @@ public class MainConectar extends AppCompatActivity {
      * Configura os botões da interface e seus listeners.
      */
     private void configurarBotoes() {
+        configurarBotaoConectar();
+        configurarBotaoEsqueceuSenha();
+    }
+
+    /**
+     * Configura o botão de conectar.
+     */
+    private void configurarBotaoConectar() {
         configurarEfeitoBotao(botaoConectar);
         botaoConectar.setOnClickListener(v -> tentarLogin());
+    }
+
+    /**
+     * Configura o botão de "Esqueceu a senha" para mostrar um diálogo de recuperação
+     */
+    private void configurarBotaoEsqueceuSenha() {
+        TextView botaoEsqueceuSenha = findViewById(R.id.botao_esqueceu_senha);
+        botaoEsqueceuSenha.setOnClickListener(v -> mostrarDialogoRecuperarSenha());
+    }
+
+    /**
+     * Mostra um diálogo com campo de email para recuperação de senha
+     */
+    private void mostrarDialogoRecuperarSenha() {
+        // Criar o EditText para o email
+        EditText campoEmailRecuperar = new EditText(this);
+        campoEmailRecuperar.setInputType(InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
+        campoEmailRecuperar.setHint("Digite seu e-mail");
+        int padding = (int) (16 * getResources().getDisplayMetrics().density);
+        campoEmailRecuperar.setPadding(padding, padding, padding, padding);
+
+        // Criar e configurar o diálogo
+        new MaterialAlertDialogBuilder(this)
+            .setTitle("Recuperar Senha")
+            .setMessage("Digite seu e-mail para receber o link de recuperação de senha")
+            .setView(campoEmailRecuperar)
+            .setPositiveButton("Enviar", (dialog, which) -> {
+                String email = campoEmailRecuperar.getText().toString().trim();
+                if (!email.isEmpty()) {
+                    enviarEmailRecuperacao(email);
+                } else {
+                    Toast.makeText(MainConectar.this, 
+                        "Por favor, digite seu e-mail", 
+                        Toast.LENGTH_SHORT).show();
+                }
+            })
+            .setNegativeButton("Não", null)
+            .show();
+    }
+
+    /**
+     * Envia o email de recuperação de senha usando o Firebase
+     * @param email Email do usuário
+     */
+    private void enviarEmailRecuperacao(String email) {
+        loadingConectar.setVisibility(View.VISIBLE);
+        mAuth.sendPasswordResetEmail(email)
+            .addOnCompleteListener(task -> {
+                loadingConectar.setVisibility(View.GONE);
+                if (task.isSuccessful()) {
+                    Toast.makeText(MainConectar.this,
+                        "Email de recuperação enviado com sucesso",
+                        Toast.LENGTH_LONG).show();
+                } else {
+                    String erro = "Erro ao enviar email de recuperação";
+                    if (task.getException() instanceof FirebaseAuthInvalidUserException) {
+                        erro = "Não existe uma conta com este e-mail";
+                    }
+                    Toast.makeText(MainConectar.this, erro, Toast.LENGTH_LONG).show();
+                }
+            });
     }
 
     /**

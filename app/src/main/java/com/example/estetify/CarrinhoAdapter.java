@@ -11,15 +11,19 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import java.util.List;
 
+/**
+ * Adapter para exibir itens do carrinho em um RecyclerView.
+ * Gerencia a exibição dos itens e a interação com o botão de remover.
+ */
 public class CarrinhoAdapter extends RecyclerView.Adapter<CarrinhoAdapter.CarrinhoViewHolder> {
-    private List<CarrinhoItem> itens;
+    private List<Carrinho> itens;
     private OnItemRemovidoListener listener;
 
     public interface OnItemRemovidoListener {
-        void onItemRemovido(CarrinhoItem item, int position);
+        void onItemRemovido(Carrinho item, int position);
     }
 
-    public CarrinhoAdapter(List<CarrinhoItem> itens, OnItemRemovidoListener listener) {
+    public CarrinhoAdapter(List<Carrinho> itens, OnItemRemovidoListener listener) {
         this.itens = itens;
         this.listener = listener;
     }
@@ -34,7 +38,7 @@ public class CarrinhoAdapter extends RecyclerView.Adapter<CarrinhoAdapter.Carrin
 
     @Override
     public void onBindViewHolder(@NonNull CarrinhoViewHolder holder, int position) {
-        CarrinhoItem item = itens.get(position);
+        Carrinho item = itens.get(position);
         
         // Carregar imagem
         if (item.getFotoUrl() != null && !item.getFotoUrl().isEmpty()) {
@@ -61,11 +65,14 @@ public class CarrinhoAdapter extends RecyclerView.Adapter<CarrinhoAdapter.Carrin
         return itens.size();
     }
 
-    public void updateItens(List<CarrinhoItem> novosItens) {
+    public void updateItens(List<Carrinho> novosItens) {
         this.itens = novosItens;
         notifyDataSetChanged();
     }
 
+    /**
+     * ViewHolder para os itens do carrinho
+     */
     static class CarrinhoViewHolder extends RecyclerView.ViewHolder {
         ImageView itemImage;
         TextView itemTitle;

@@ -1,13 +1,11 @@
 package com.example.estetify;
 
-import java.io.Serializable;
-
 /**
- * Classe modelo que representa um item/serviço disponível para compra no sistema.
- * Esta classe é utilizada para mapear os dados de itens entre o app e o Firestore.
- * Implementa Serializable para permitir a passagem do objeto entre Activities/Fragments.
+ * Classe modelo que representa um item no carrinho de compras.
+ * Esta classe é utilizada para mapear os dados de itens do carrinho entre o app e o Firestore.
+ * Contém informações do item e da loja que o oferece.
  */
-public class Item implements Serializable {
+public class Carrinho {
     //region Campos
     /** ID único do item */
     private String id;
@@ -18,43 +16,42 @@ public class Item implements Serializable {
     /** Descrição detalhada do item */
     private String descricao;
     
+    /** Preço do item */
+    private double preco;
+    
     /** URL da foto do item */
     private String fotoUrl;
     
     /** Tipo do item (ex: produto, serviço) */
     private String tipo;
     
-    /** Preço do item */
-    private double preco;
-    
     /** ID da loja que oferece o item */
     private String lojaId;
+    
+    /** Nome da loja que oferece o item */
+    private String lojaNome;
     //endregion
 
     //region Construtores
     /**
      * Construtor vazio necessário para o Firestore
      */
-    public Item() {}
+    public Carrinho() {}
 
     /**
-     * Cria um novo item com os dados especificados
-     * @param id ID único do item
-     * @param titulo Título/nome do item
-     * @param descricao Descrição detalhada
-     * @param fotoUrl URL da foto
-     * @param tipo Tipo do item
-     * @param preco Preço do item
-     * @param lojaId ID da loja que oferece o item
+     * Cria um novo item no carrinho a partir de um Item e o nome da loja
+     * @param item Item a ser adicionado ao carrinho
+     * @param lojaNome Nome da loja que oferece o item
      */
-    public Item(String id, String titulo, String descricao, String fotoUrl, String tipo, double preco, String lojaId) {
-        this.id = id;
-        this.titulo = titulo;
-        this.descricao = descricao;
-        this.fotoUrl = fotoUrl;
-        this.tipo = tipo;
-        this.preco = preco;
-        this.lojaId = lojaId;
+    public Carrinho(Item item, String lojaNome) {
+        this.id = item.getId();
+        this.titulo = item.getTitulo();
+        this.descricao = item.getDescricao();
+        this.preco = item.getPreco();
+        this.fotoUrl = item.getFotoUrl();
+        this.tipo = item.getTipo();
+        this.lojaId = item.getLojaId();
+        this.lojaNome = lojaNome;
     }
     //endregion
 
@@ -83,6 +80,14 @@ public class Item implements Serializable {
         this.descricao = descricao; 
     }
 
+    public double getPreco() { 
+        return preco; 
+    }
+
+    public void setPreco(double preco) { 
+        this.preco = preco; 
+    }
+
     public String getFotoUrl() { 
         return fotoUrl; 
     }
@@ -99,20 +104,20 @@ public class Item implements Serializable {
         this.tipo = tipo; 
     }
 
-    public double getPreco() { 
-        return preco; 
-    }
-
-    public void setPreco(double preco) { 
-        this.preco = preco; 
-    }
-
     public String getLojaId() { 
         return lojaId; 
     }
 
     public void setLojaId(String lojaId) { 
         this.lojaId = lojaId; 
+    }
+
+    public String getLojaNome() { 
+        return lojaNome; 
+    }
+
+    public void setLojaNome(String lojaNome) { 
+        this.lojaNome = lojaNome; 
     }
     //endregion
 }
