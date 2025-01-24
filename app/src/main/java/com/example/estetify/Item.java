@@ -1,6 +1,8 @@
 package com.example.estetify;
 
-public class Item {
+import java.io.Serializable;
+
+public class Item implements Serializable {
     private String id;
     private String titulo;
     private String descricao;
@@ -8,6 +10,8 @@ public class Item {
     private String tipo;
     private double preco;
     private String lojaId;
+
+    public Item() {} // Construtor vazio necessário para o Firestore
 
     public Item(String id, String titulo, String descricao, String fotoUrl, String tipo, double preco, String lojaId) {
         this.id = id;
@@ -27,4 +31,13 @@ public class Item {
     public String getTipo() { return tipo; }
     public double getPreco() { return preco; }
     public String getLojaId() { return lojaId; }
+
+    // Setters necessários para o Firestore
+    public void setId(String id) { this.id = id; }
+    public void setTitulo(String titulo) { this.titulo = titulo; }
+    public void setDescricao(String descricao) { this.descricao = descricao; }
+    public void setFotoUrl(String fotoUrl) { this.fotoUrl = fotoUrl; }
+    public void setTipo(String tipo) { this.tipo = tipo; }
+    public void setPreco(double preco) { this.preco = preco; }
+    public void setLojaId(String lojaId) { this.lojaId = lojaId; }
 }
